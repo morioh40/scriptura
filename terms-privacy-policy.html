@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scriptura - Legal</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary: #3a6b7e;
+        --primary-dark: #2c5868;
+        --secondary: #8a5a44;
+        --accent: #d39d5b;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --gray: #6c757d;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        background-color: #f5f7f9;
+        color: var(--dark);
+        line-height: 1.8;
+        padding-bottom: 70px;
+      }
+
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Header */
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        padding: 15px 0;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 8px;
+        color: var(--accent);
+      }
+
+      .header-back {
+        background: transparent;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        padding: 5px 10px;
+        transition: var(--transition);
+      }
+
+      .header-back:hover {
+        opacity: 0.8;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-links a {
+        color: white;
+        text-decoration: none;
+        opacity: 0.8;
+        transition: var(--transition);
+        font-size: 0.95rem;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.active {
+        opacity: 1;
+      }
+
+      /* Page Header */
+      .page-header {
+        text-align: center;
+        padding: 40px 0 30px;
+      }
+
+      .page-header h1 {
+        color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .page-header p {
+        color: var(--gray);
+        font-size: 1.05rem;
+      }
+
+      .page-header .last-updated {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 4px 16px;
+        background: #e8f4f8;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        color: var(--primary);
+      }
+
+      /* Legal Content */
+      .legal-content {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 40px;
+        margin-bottom: 30px;
+      }
+
+      .legal-content h2 {
+        color: var(--primary);
+        font-size: 1.6rem;
+        margin: 30px 0 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f1f1;
+      }
+
+      .legal-content h2:first-of-type {
+        margin-top: 0;
+      }
+
+      .legal-content h3 {
+        color: var(--dark);
+        font-size: 1.2rem;
+        margin: 20px 0 10px;
+      }
+
+      .legal-content p {
+        margin-bottom: 15px;
+        color: #444;
+      }
+
+      .legal-content ul {
+        margin: 10px 0 20px 25px;
+      }
+
+      .legal-content ul li {
+        margin-bottom: 8px;
+        color: #444;
+      }
+
+      .legal-content .highlight-box {
+        background: #f8fafb;
+        border-left: 4px solid var(--primary);
+        padding: 15px 20px;
+        margin: 20px 0;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .legal-content .highlight-box p {
+        margin-bottom: 0;
+      }
+
+      .legal-content .section-number {
+        display: inline-block;
+        background: var(--primary);
+        color: white;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        text-align: center;
+        line-height: 28px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        margin-right: 8px;
+      }
+
+      /* Table of Contents */
+      .toc {
+        background: #f8fafb;
+        border-radius: 8px;
+        padding: 20px 25px;
+        margin-bottom: 30px;
+      }
+
+      .toc h3 {
+        color: var(--primary);
+        margin-bottom: 12px;
+        font-size: 1.1rem;
+      }
+
+      .toc ul {
+        list-style: none;
+        margin: 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px 20px;
+      }
+
+      .toc ul li {
+        margin-bottom: 4px;
+      }
+
+      .toc ul li a {
+        color: var(--gray);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: var(--transition);
+      }
+
+      .toc ul li a:hover {
+        color: var(--primary);
+      }
+
+      /* Bottom Navigation */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        background: white;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        padding: 10px 0;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: var(--gray);
+        font-size: 0.75rem;
+        transition: var(--transition);
+      }
+
+      .nav-item i {
+        font-size: 1.25rem;
+        margin-bottom: 4px;
+      }
+
+      .nav-item.active {
+        color: var(--primary);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .legal-content {
+          padding: 25px 20px;
+        }
+
+        .page-header h1 {
+          font-size: 1.8rem;
+        }
+
+        .toc ul {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-links {
+          gap: 10px;
+        }
+
+        .nav-links a {
+          font-size: 0.85rem;
+        }
+
+        .header-content {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .header-back {
+          font-size: 1rem;
+        }
+      }
+
+      /* Print Styles */
+      @media print {
+        header,
+        .bottom-nav,
+        .header-back,
+        .nav-links {
+          display: none !important;
+        }
+        .legal-content {
+          box-shadow: none;
+          padding: 20px;
+        }
+        body {
+          background: white;
+          padding: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div style="display: flex; align-items: center; gap: 15px">
+            <button class="header-back" onclick="history.back()">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="logo">
+              <i class="fas fa-bible"></i>
+              <span>Scriptura</span>
+            </div>
+          </div>
+          <div class="nav-links">
+            <a href="#" class="active" id="termsLink">Terms</a>
+            <a href="#" id="privacyLink">Privacy</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Terms of Service -->
+      <div id="termsContent">
+        <div class="page-header">
+          <h1>Terms of Service</h1>
+          <p>
+            Please read these terms carefully before using the Scriptura app
+          </p>
+          <span class="last-updated"
+            ><i class="far fa-calendar-alt"></i> Last Updated: January 15,
+            2024</span
+          >
+        </div>
+
+        <div class="toc">
+          <h3><i class="fas fa-list"></i> Table of Contents</h3>
+          <ul>
+            <li><a href="#terms-section1">1. Acceptance of Terms</a></li>
+            <li><a href="#terms-section2">2. Description of Service</a></li>
+            <li><a href="#terms-section3">3. User Accounts</a></li>
+            <li><a href="#terms-section4">4. User Content</a></li>
+            <li><a href="#terms-section5">5. Privacy Policy</a></li>
+            <li><a href="#terms-section6">6. Intellectual Property</a></li>
+            <li><a href="#terms-section7">7. Prohibited Conduct</a></li>
+            <li><a href="#terms-section8">8. Third-Party Services</a></li>
+            <li><a href="#terms-section9">9. Disclaimer of Warranties</a></li>
+            <li><a href="#terms-section10">10. Limitation of Liability</a></li>
+            <li><a href="#terms-section11">11. Indemnification</a></li>
+            <li><a href="#terms-section12">12. Termination</a></li>
+            <li><a href="#terms-section13">13. Governing Law</a></li>
+            <li><a href="#terms-section14">14. Changes to Terms</a></li>
+            <li><a href="#terms-section15">15. Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="legal-content">
+          <h2 id="terms-section1">
+            <span class="section-number">1</span> Acceptance of Terms
+          </h2>
+          <p>
+            By downloading, accessing, or using the Scriptura application
+            ("App," "Service," or "We"), you agree to be bound by these Terms of
+            Service ("Terms"). If you do not agree to these Terms, please do not
+            use the App.
+          </p>
+          <p>
+            These Terms apply to all users, including those who contribute
+            content, information, and other materials or services on or through
+            the App.
+          </p>
+
+          <h2 id="terms-section2">
+            <span class="section-number">2</span> Description of Service
+          </h2>
+          <p>
+            Scriptura is a faith-based application that provides users with
+            access to:
+          </p>
+          <ul>
+            <li>Daily Bible verses and devotions</li>
+            <li>Prayer requests and community support</li>
+            <li>Bible reading plans and study tools</li>
+            <li>Audio Bible content</li>
+            <li>Community forums and group discussions</li>
+            <li>Personal journaling and bookmarking features</li>
+          </ul>
+          <p>
+            We reserve the right to modify, suspend, or discontinue any part of
+            the Service at any time without notice.
+          </p>
+
+          <h2 id="terms-section3">
+            <span class="section-number">3</span> User Accounts
+          </h2>
+          <h3>3.1 Account Creation</h3>
+          <p>
+            To access certain features of the App, you may be required to create
+            an account. You agree to provide accurate, current, and complete
+            information during registration and to update such information to
+            keep it accurate.
+          </p>
+
+          <h3>3.2 Account Security</h3>
+          <p>
+            You are responsible for safeguarding your account credentials and
+            for any activities or actions under your account. You agree to
+            notify us immediately of any unauthorized use of your account.
+          </p>
+
+          <h3>3.3 Age Requirements</h3>
+          <p>
+            You must be at least 13 years old to create an account. If you are
+            under 18, you represent that you have parental or guardian consent
+            to use the Service.
+          </p>
+
+          <div class="highlight-box">
+            <p>
+              <strong>🙏 Faith-Based Community:</strong> We are committed to
+              creating a safe, respectful community for all users to grow in
+              their faith journey.
+            </p>
+          </div>
+
+          <h2 id="terms-section4">
+            <span class="section-number">4</span> User Content
+          </h2>
+          <h3>4.1 Content Ownership</h3>
+          <p>
+            You retain all rights to content you submit, post, or display on the
+            App ("User Content"). By submitting User Content, you grant
+            Scriptura a worldwide, non-exclusive, royalty-free license to use,
+            reproduce, adapt, and distribute such content for the purpose of
+            operating and improving the Service.
+          </p>
+
+          <h3>4.2 Content Responsibility</h3>
+          <p>
+            You are solely responsible for the User Content you post. You agree
+            not to post content that is:
+          </p>
+          <ul>
+            <li>Illegal, harmful, or fraudulent</li>
+            <li>Hateful, discriminatory, or harassing</li>
+            <li>Sexually explicit or obscene</li>
+            <li>Infringing on intellectual property rights</li>
+            <li>Spam, advertising, or promotional content</li>
+          </ul>
+
+          <h3>4.3 Content Moderation</h3>
+          <p>
+            We reserve the right to review, monitor, and remove User Content
+            that violates these Terms or is otherwise objectionable, in our sole
+            discretion.
+          </p>
+
+          <h2 id="terms-section5">
+            <span class="section-number">5</span> Privacy Policy
+          </h2>
+          <p>
+            Your privacy is important to us. Please review our
+            <a href="#" style="color: var(--primary)" id="privacyLink2"
+              >Privacy Policy</a
+            >, which explains how we collect, use, and disclose information
+            about you.
+          </p>
+
+          <h2 id="terms-section6">
+            <span class="section-number">6</span> Intellectual Property
+          </h2>
+          <p>
+            The App and its entire contents, features, and functionality
+            (including but not limited to all information, software, text,
+            displays, images, video, and audio) are owned by Scriptura and are
+            protected by copyright, trademark, and other intellectual property
+            laws.
+          </p>
+          <p>
+            You may not reproduce, distribute, modify, create derivative works
+            of, publicly display, or publicly perform any of the copyrighted
+            material without our prior written consent.
+          </p>
+
+          <h2 id="terms-section7">
+            <span class="section-number">7</span> Prohibited Conduct
+          </h2>
+          <p>You agree not to:</p>
+          <ul>
+            <li>Use the Service for any unlawful purpose</li>
+            <li>
+              Attempt to gain unauthorized access to the Service or its related
+              systems
+            </li>
+            <li>Interfere with or disrupt the Service or servers</li>
+            <li>Use any automated means to access the Service</li>
+            <li>Impersonate any person or entity</li>
+            <li>Collect or harvest personal information of other users</li>
+            <li>Use the Service to spread malware or viruses</li>
+          </ul>
+
+          <h2 id="terms-section8">
+            <span class="section-number">8</span> Third-Party Services
+          </h2>
+          <p>
+            The App may contain links to third-party websites or services. We do
+            not endorse and are not responsible for the content, privacy
+            policies, or practices of any third-party services.
+          </p>
+
+          <h2 id="terms-section9">
+            <span class="section-number">9</span> Disclaimer of Warranties
+          </h2>
+          <p>
+            THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT
+            WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED. WE DO NOT WARRANT THAT
+            THE SERVICE WILL BE UNINTERRUPTED, ERROR-FREE, OR SECURE.
+          </p>
+          <p>
+            WE MAKE NO REPRESENTATIONS ABOUT THE ACCURACY, RELIABILITY,
+            COMPLETENESS, OR TIMELINESS OF THE CONTENT PROVIDED THROUGH THE
+            SERVICE.
+          </p>
+
+          <h2 id="terms-section10">
+            <span class="section-number">10</span> Limitation of Liability
+          </h2>
+          <p>
+            TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL SCRIPTURA
+            BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
+            PUNITIVE DAMAGES ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF
+            THE SERVICE.
+          </p>
+
+          <h2 id="terms-section11">
+            <span class="section-number">11</span> Indemnification
+          </h2>
+          <p>
+            You agree to indemnify and hold harmless Scriptura and its officers,
+            directors, employees, and agents from any claims, damages, losses,
+            liabilities, and expenses arising out of your use of the Service or
+            violation of these Terms.
+          </p>
+
+          <h2 id="terms-section12">
+            <span class="section-number">12</span> Termination
+          </h2>
+          <p>
+            We may terminate or suspend your account and bar access to the
+            Service immediately, without prior notice or liability, for any
+            reason whatsoever, including without limitation if you breach these
+            Terms.
+          </p>
+          <p>
+            You may terminate your account at any time by contacting us or using
+            the account settings in the App.
+          </p>
+
+          <h2 id="terms-section13">
+            <span class="section-number">13</span> Governing Law
+          </h2>
+          <p>
+            These Terms shall be governed by and construed in accordance with
+            the laws of the State of California, without regard to its conflict
+            of law provisions.
+          </p>
+
+          <h2 id="terms-section14">
+            <span class="section-number">14</span> Changes to Terms
+          </h2>
+          <p>
+            We reserve the right to update or modify these Terms at any time. We
+            will notify you of any changes by posting the new Terms on this page
+            and updating the "Last Updated" date.
+          </p>
+          <p>
+            Your continued use of the Service after any changes constitutes
+            acceptance of the new Terms.
+          </p>
+
+          <h2 id="terms-section15">
+            <span class="section-number">15</span> Contact Us
+          </h2>
+          <p>
+            If you have any questions about these Terms, please contact us at:
+          </p>
+          <p>
+            <strong>Email:</strong> legal@scriptura.com<br />
+            <strong>Address:</strong> Scriptura, 123 Faith Street, Suite 100,
+            San Francisco, CA 94105
+          </p>
+        </div>
+      </div>
+
+      <!-- Privacy Policy (Hidden by default) -->
+      <div id="privacyContent" style="display: none">
+        <div class="page-header">
+          <h1>Privacy Policy</h1>
+          <p>How we collect, use, and protect your personal information</p>
+          <span class="last-updated"
+            ><i class="far fa-calendar-alt"></i> Last Updated: January 15,
+            2024</span
+          >
+        </div>
+
+        <div class="toc">
+          <h3><i class="fas fa-list"></i> Table of Contents</h3>
+          <ul>
+            <li><a href="#privacy-section1">1. Introduction</a></li>
+            <li><a href="#privacy-section2">2. Information We Collect</a></li>
+            <li>
+              <a href="#privacy-section3">3. How We Use Your Information</a>
+            </li>
+            <li><a href="#privacy-section4">4. Information Sharing</a></li>
+            <li><a href="#privacy-section5">5. Data Security</a></li>
+            <li><a href="#privacy-section6">6. Your Rights</a></li>
+            <li><a href="#privacy-section7">7. Cookies</a></li>
+            <li><a href="#privacy-section8">8. Children's Privacy</a></li>
+            <li><a href="#privacy-section9">9. Third-Party Links</a></li>
+            <li><a href="#privacy-section10">10. Changes to Policy</a></li>
+            <li><a href="#privacy-section11">11. Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="legal-content">
+          <h2 id="privacy-section1">
+            <span class="section-number">1</span> Introduction
+          </h2>
+          <p>
+            Scriptura ("we," "us," or "our") respects your privacy and is
+            committed to protecting the personal information you share with us.
+            This Privacy Policy explains how we collect, use, disclose, and
+            safeguard your information when you use our mobile application (the
+            "App").
+          </p>
+          <p>
+            Please read this Privacy Policy carefully. By using the App, you
+            consent to the data practices described in this policy.
+          </p>
+
+          <h2 id="privacy-section2">
+            <span class="section-number">2</span> Information We Collect
+          </h2>
+          <h3>2.1 Information You Provide</h3>
+          <ul>
+            <li>
+              <strong>Account Information:</strong> Name, email address,
+              password, and profile information when you create an account.
+            </li>
+            <li>
+              <strong>User Content:</strong> Prayer requests, journal entries,
+              comments, bookmarks, and other content you create or share.
+            </li>
+            <li>
+              <strong>Communication:</strong> Messages and feedback you send to
+              us.
+            </li>
+          </ul>
+
+          <h3>2.2 Automatically Collected Information</h3>
+          <ul>
+            <li>
+              <strong>Device Information:</strong> Device type, operating
+              system, unique device identifiers, and mobile network information.
+            </li>
+            <li>
+              <strong>Usage Data:</strong> How you interact with the App,
+              features you use, time spent, and navigation patterns.
+            </li>
+            <li>
+              <strong>Location Data:</strong> Approximate location based on IP
+              address (with your permission).
+            </li>
+          </ul>
+
+          <h3>2.3 Information from Third Parties</h3>
+          <ul>
+            <li>
+              <strong>Social Media:</strong> If you sign in using Google or
+              Facebook, we receive your name, email address, and profile
+              picture.
+            </li>
+            <li>
+              <strong>Analytics:</strong> We use analytics tools to understand
+              how users interact with the App.
+            </li>
+          </ul>
+
+          <div class="highlight-box">
+            <p>
+              <strong>🔒 Your Privacy Matters:</strong> We will never sell your
+              personal information to third parties. Your data is used solely to
+              provide and improve the Scriptura experience.
+            </p>
+          </div>
+
+          <h2 id="privacy-section3">
+            <span class="section-number">3</span> How We Use Your Information
+          </h2>
+          <p>We use your information to:</p>
+          <ul>
+            <li>Provide, maintain, and improve the App and its features</li>
+            <li>Create and manage your account</li>
+            <li>Process transactions and manage subscriptions</li>
+            <li>
+              Send you notifications, updates, and promotional communications
+              (with your consent)
+            </li>
+            <li>Respond to your comments, questions, and requests</li>
+            <li>Analyze usage trends and improve user experience</li>
+            <li>Ensure the security and integrity of the App</li>
+            <li>Comply with legal obligations</li>
+          </ul>
+
+          <h2 id="privacy-section4">
+            <span class="section-number">4</span> Information Sharing
+          </h2>
+          <h3>4.1 Sharing with Your Consent</h3>
+          <p>
+            We may share your information with your consent or as necessary to
+            provide the Service.
+          </p>
+
+          <h3>4.2 Service Providers</h3>
+          <p>
+            We may share information with third-party vendors who provide
+            services such as hosting, analytics, customer support, and payment
+            processing. These providers are contractually obligated to protect
+            your information.
+          </p>
+
+          <h3>4.3 Public Content</h3>
+          <p>
+            Information you post publicly, such as prayer requests or forum
+            comments, may be visible to other users of the App.
+          </p>
+
+          <h3>4.4 Legal Requirements</h3>
+          <p>
+            We may disclose your information if required to do so by law or in
+            response to valid requests by public authorities.
+          </p>
+
+          <h2 id="privacy-section5">
+            <span class="section-number">5</span> Data Security
+          </h2>
+          <p>
+            We implement reasonable security measures to protect your personal
+            information from unauthorized access, disclosure, alteration, or
+            destruction. These measures include:
+          </p>
+          <ul>
+            <li>Encryption of data in transit and at rest</li>
+            <li>Secure authentication protocols</li>
+            <li>Regular security assessments and monitoring</li>
+            <li>Access controls and employee training</li>
+          </ul>
+          <p>
+            However, no method of transmission over the internet is completely
+            secure, and we cannot guarantee absolute security.
+          </p>
+
+          <h2 id="privacy-section6">
+            <span class="section-number">6</span> Your Rights
+          </h2>
+          <p>You have the right to:</p>
+          <ul>
+            <li>
+              <strong>Access:</strong> Request a copy of your personal
+              information
+            </li>
+            <li>
+              <strong>Correction:</strong> Update or correct inaccurate
+              information
+            </li>
+            <li>
+              <strong>Deletion:</strong> Request deletion of your personal
+              information
+            </li>
+            <li>
+              <strong>Restriction:</strong> Restrict processing of your
+              information
+            </li>
+            <li>
+              <strong>Portability:</strong> Receive your data in a portable
+              format
+            </li>
+            <li>
+              <strong>Opt-Out:</strong> Opt out of marketing communications
+            </li>
+          </ul>
+          <p>
+            To exercise these rights, please contact us at
+            privacy@scriptura.com.
+          </p>
+
+          <h2 id="privacy-section7">
+            <span class="section-number">7</span> Cookies and Tracking
+          </h2>
+          <p>We use cookies and similar tracking technologies to:</p>
+          <ul>
+            <li>Maintain your session and preferences</li>
+            <li>Analyze usage patterns and improve the App</li>
+            <li>Deliver relevant content and advertisements</li>
+          </ul>
+          <p>
+            You can control cookie preferences through your browser or device
+            settings.
+          </p>
+
+          <h2 id="privacy-section8">
+            <span class="section-number">8</span> Children's Privacy
+          </h2>
+          <p>
+            The App is not intended for children under the age of 13. We do not
+            knowingly collect personal information from children under 13. If
+            you believe we have inadvertently collected information from a child
+            under 13, please contact us immediately.
+          </p>
+
+          <h2 id="privacy-section9">
+            <span class="section-number">9</span> Third-Party Links
+          </h2>
+          <p>
+            The App may contain links to third-party websites or services. We
+            are not responsible for the privacy practices of these third
+            parties. We encourage you to review their privacy policies before
+            providing any personal information.
+          </p>
+
+          <h2 id="privacy-section10">
+            <span class="section-number">10</span> Changes to This Privacy
+            Policy
+          </h2>
+          <p>
+            We may update this Privacy Policy from time to time. We will notify
+            you of any changes by posting the new policy on this page and
+            updating the "Last Updated" date.
+          </p>
+          <p>
+            We encourage you to review this Privacy Policy periodically for any
+            changes. Your continued use of the App after the changes are posted
+            constitutes your acceptance of the updated policy.
+          </p>
+
+          <h2 id="privacy-section11">
+            <span class="section-number">11</span> Contact Us
+          </h2>
+          <p>
+            If you have any questions, concerns, or requests regarding this
+            Privacy Policy, please contact us:
+          </p>
+          <p>
+            <strong>Email:</strong> privacy@scriptura.com<br />
+            <strong>Data Protection Officer:</strong> dpo@scriptura.com<br />
+            <strong>Address:</strong> Scriptura, 123 Faith Street, Suite 100,
+            San Francisco, CA 94105
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a href="#" class="nav-item">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-book"></i>
+        <span>Bible</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-pray"></i>
+        <span>Prayer</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-users"></i>
+        <span>Community</span>
+      </a>
+      <a href="#" class="nav-item active">
+        <i class="fas fa-file-contract"></i>
+        <span>Legal</span>
+      </a>
+    </div>
+
+    <script>
+      // Get elements
+      const termsLink = document.getElementById('termsLink');
+      const privacyLink = document.getElementById('privacyLink');
+      const privacyLink2 = document.getElementById('privacyLink2');
+      const termsContent = document.getElementById('termsContent');
+      const privacyContent = document.getElementById('privacyContent');
+
+      // Function to switch views
+      function showTerms() {
+        termsContent.style.display = 'block';
+        privacyContent.style.display = 'none';
+        termsLink.classList.add('active');
+        privacyLink.classList.remove('active');
+        document.title = 'Scriptura - Terms of Service';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function showPrivacy() {
+        termsContent.style.display = 'none';
+        privacyContent.style.display = 'block';
+        privacyLink.classList.add('active');
+        termsLink.classList.remove('active');
+        document.title = 'Scriptura - Privacy Policy';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      // Event listeners
+      termsLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        showTerms();
+      });
+
+      privacyLink.addEventListener('click', function (e) {
+        e.preventDefault();
+        showPrivacy();
+      });
+
+      privacyLink2.addEventListener('click', function (e) {
+        e.preventDefault();
+        showPrivacy();
+      });
+
+      // Check URL hash on load
+      if (window.location.hash.includes('privacy')) {
+        showPrivacy();
+      } else {
+        showTerms();
+      }
+
+      // Smooth scroll for TOC links
+      document.querySelectorAll('.toc a').forEach((link) => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            const headerOffset = 80;
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition =
+              elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+              top: offsetPosition,
+              behavior: 'smooth',
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

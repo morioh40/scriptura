@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scriptura - Community</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary: #3a6b7e;
+        --secondary: #8a5a44;
+        --accent: #d39d5b;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --gray: #6c757d;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+        --community: #5a7e8c;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        background-color: #f5f7f9;
+        color: var(--dark);
+        line-height: 1.6;
+        padding-bottom: 70px; /* Space for bottom nav */
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      /* Header */
+      header {
+        background: linear-gradient(135deg, var(--primary), #2c5868);
+        color: white;
+        padding: 15px 0;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 8px;
+        color: var(--accent);
+      }
+
+      .user-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .user-actions button {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        margin-left: 15px;
+        font-size: 1rem;
+      }
+
+      /* Community Header */
+      .community-header {
+        text-align: center;
+        margin: 25px 0;
+      }
+
+      .community-header h1 {
+        color: var(--primary);
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+      }
+
+      .community-header p {
+        color: var(--gray);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Tabs */
+      .community-tabs {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #e0e0e0;
+      }
+
+      .tab-btn {
+        padding: 12px 25px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+        color: var(--gray);
+        position: relative;
+        transition: var(--transition);
+      }
+
+      .tab-btn.active {
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .tab-btn.active::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: var(--primary);
+        border-radius: 3px 3px 0 0;
+      }
+
+      /* Community Cards */
+      .community-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 25px;
+        margin-bottom: 25px;
+        transition: var(--transition);
+      }
+
+      .community-card:hover {
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      }
+
+      .community-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .community-card-title {
+        font-size: 1.3rem;
+        color: var(--primary);
+      }
+
+      .community-card-time {
+        font-size: 0.9rem;
+        color: var(--gray);
+      }
+
+      .community-card-content {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 20px;
+      }
+
+      .community-card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #f1f1f1;
+        padding-top: 15px;
+      }
+
+      .community-meta {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .community-meta-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 0.9rem;
+        color: var(--gray);
+      }
+
+      .community-card-actions {
+        display: flex;
+        gap: 10px;
+      }
+
+      .community-btn {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .community-btn-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .community-btn-primary:hover {
+        background-color: #2c5868;
+      }
+
+      .community-btn-outline {
+        background: transparent;
+        border: 1px solid var(--primary);
+        color: var(--primary);
+      }
+
+      .community-btn-outline:hover {
+        background-color: #f0f5f7;
+      }
+
+      /* Groups Grid */
+      .groups-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .group-card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 20px;
+        text-align: center;
+        transition: var(--transition);
+        cursor: pointer;
+      }
+
+      .group-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+      }
+
+      .group-icon {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: #f0f5f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        color: var(--primary);
+        font-size: 1.8rem;
+      }
+
+      .group-title {
+        font-size: 1.2rem;
+        color: var(--primary);
+        margin-bottom: 8px;
+      }
+
+      .group-desc {
+        font-size: 0.9rem;
+        color: var(--gray);
+        margin-bottom: 15px;
+      }
+
+      .group-members {
+        font-size: 0.85rem;
+        color: var(--gray);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      /* Discussion Thread */
+      .discussion-thread {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 25px;
+        margin-bottom: 25px;
+      }
+
+      .thread-header {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .user-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary), #2c5868);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+      }
+
+      .thread-user {
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .thread-time {
+        font-size: 0.9rem;
+        color: var(--gray);
+      }
+
+      .thread-content {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        margin-bottom: 20px;
+        padding-left: 65px;
+      }
+
+      .thread-actions {
+        display: flex;
+        gap: 15px;
+        padding-left: 65px;
+      }
+
+      /* Comment Section */
+      .comment-section {
+        background: #f9f9f9;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+      }
+
+      .comment {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .comment:last-child {
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border-bottom: none;
+      }
+
+      .comment-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--secondary), #7a4a34);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        flex-shrink: 0;
+      }
+
+      .comment-content {
+        flex-grow: 1;
+      }
+
+      .comment-user {
+        font-weight: 600;
+        color: var(--secondary);
+        margin-bottom: 5px;
+      }
+
+      .comment-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 10px;
+      }
+
+      .comment-actions {
+        display: flex;
+        gap: 15px;
+      }
+
+      .comment-action {
+        font-size: 0.85rem;
+        color: var(--gray);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        cursor: pointer;
+      }
+
+      /* Joined Indicator */
+      .joined-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background-color: #e8f4f8;
+        color: var(--primary);
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        margin-left: 10px;
+      }
+
+      /* Add Post Button */
+      .add-post-btn {
+        position: fixed;
+        bottom: 85px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--primary);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        z-index: 90;
+        transition: var(--transition);
+      }
+
+      .add-post-btn:hover {
+        transform: scale(1.05);
+        background: #2c5868;
+      }
+
+      /* Bottom Navigation */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        background: white;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        padding: 10px 0;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: var(--gray);
+        font-size: 0.75rem;
+        transition: var(--transition);
+      }
+
+      .nav-item i {
+        font-size: 1.25rem;
+        margin-bottom: 4px;
+      }
+
+      .nav-item.active {
+        color: var(--primary);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .community-tabs {
+          overflow-x: auto;
+          justify-content: flex-start;
+          padding-bottom: 10px;
+        }
+
+        .community-card-footer {
+          flex-direction: column;
+          gap: 15px;
+          align-items: flex-start;
+        }
+
+        .community-card-actions {
+          width: 100%;
+        }
+
+        .community-btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .community-header h1 {
+          font-size: 1.8rem;
+        }
+
+        .community-meta {
+          width: 100%;
+          justify-content: space-between;
+        }
+
+        .groups-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .thread-content,
+        .thread-actions {
+          padding-left: 0;
+        }
+
+        .thread-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-bible"></i>
+            <span>Scriptura</span>
+          </div>
+          <div class="user-actions">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+            <button id="notifications-btn"><i class="fas fa-bell"></i></button>
+            <button id="profile-btn"><i class="fas fa-user-circle"></i></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Community Header -->
+      <div class="community-header">
+        <h1>Faith Community</h1>
+        <p>
+          Connect with other believers, join groups, and grow together in faith.
+        </p>
+      </div>
+
+      <!-- Tabs -->
+      <div class="community-tabs">
+        <button class="tab-btn active" data-tab="discussions">
+          Discussions
+        </button>
+        <button class="tab-btn" data-tab="groups">Groups</button>
+        <button class="tab-btn" data-tab="events">Events</button>
+      </div>
+
+      <!-- Discussions Content -->
+      <div class="tab-content" id="discussions-content">
+        <h2 style="margin: 0 0 20px; color: var(--primary)">My Discussions</h2>
+        <p style="color: var(--gray); margin-bottom: 25px">
+          Discussions you've joined or started
+        </p>
+
+        <!-- Discussion Thread -->
+        <div class="discussion-thread">
+          <div class="thread-header">
+            <div class="user-avatar">JS</div>
+            <div>
+              <div class="thread-user">
+                John Smith
+                <span class="joined-indicator"
+                  ><i class="fas fa-check-circle"></i> Joined</span
+                >
+              </div>
+              <div class="thread-time">Posted 3 hours ago</div>
+            </div>
+          </div>
+          <div class="thread-content">
+            <p>
+              I've been struggling with forgiveness toward someone who hurt me
+              deeply. How do you practice biblical forgiveness when it's really
+              difficult? Any advice or personal experiences would be
+              appreciated.
+            </p>
+          </div>
+          <div class="thread-actions">
+            <div class="community-meta-item">
+              <i class="fas fa-heart"></i> 24
+            </div>
+            <div class="community-meta-item">
+              <i class="fas fa-comment"></i> 12 comments
+            </div>
+            <div class="community-meta-item">
+              <i class="fas fa-share"></i> Share
+            </div>
+          </div>
+
+          <!-- Comment Section -->
+          <div class="comment-section">
+            <div class="comment">
+              <div class="comment-avatar">MP</div>
+              <div class="comment-content">
+                <div class="comment-user">Mary Peters</div>
+                <div class="comment-text">
+                  I've been there, John. What helped me was meditating on
+                  Ephesians 4:32 - "Be kind and compassionate to one another,
+                  forgiving each other, just as in Christ God forgave you."
+                  Remembering how much God has forgiven me makes it easier to
+                  extend forgiveness to others.
+                </div>
+                <div class="comment-actions">
+                  <div class="comment-action">
+                    <i class="fas fa-heart"></i> 8
+                  </div>
+                  <div class="comment-action">
+                    <i class="fas fa-reply"></i> Reply
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="comment">
+              <div class="comment-avatar">DR</div>
+              <div class="comment-content">
+                <div class="comment-user">David Reynolds</div>
+                <div class="comment-text">
+                  Forgiveness is a process, not a one-time event. I had to make
+                  a conscious decision to forgive someone every day for months
+                  before my feelings caught up. Prayer was essential - asking
+                  God to help me want to forgive even when I didn't feel like
+                  it.
+                </div>
+                <div class="comment-actions">
+                  <div class="comment-action">
+                    <i class="fas fa-heart"></i> 5
+                  </div>
+                  <div class="comment-action">
+                    <i class="fas fa-reply"></i> Reply
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Add Comment Form -->
+            <div class="form-group" style="margin-top: 20px">
+              <textarea
+                class="form-control"
+                placeholder="Add a comment..."
+                style="min-height: 80px"
+              ></textarea>
+              <button
+                class="community-btn community-btn-primary"
+                style="margin-top: 10px; width: 100%"
+              >
+                <i class="fas fa-paper-plane"></i> Post Comment
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Discussion Card -->
+        <div class="community-card">
+          <div class="community-card-header">
+            <h2 class="community-card-title">
+              Favorite Bible Verse and Why
+              <span class="joined-indicator"
+                ><i class="fas fa-check-circle"></i> Joined</span
+              >
+            </h2>
+            <span class="community-card-time"
+              >Started by Sarah • 2 days ago</span
+            >
+          </div>
+          <div class="community-card-content">
+            <p>
+              What's your favorite Bible verse and what makes it special to you?
+              I'll start - mine is Jeremiah 29:11 because it reminded me of
+              God's good plans for me during a difficult season of unemployment.
+            </p>
+          </div>
+          <div class="community-card-footer">
+            <div class="community-meta">
+              <div class="community-meta-item">
+                <i class="fas fa-comments"></i> 47 comments
+              </div>
+              <div class="community-meta-item">
+                <i class="fas fa-heart"></i> 32 likes
+              </div>
+            </div>
+            <div class="community-card-actions">
+              <button class="community-btn community-btn-outline">
+                <i class="fas fa-comment"></i> Add Comment
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Discussion Card -->
+        <div class="community-card">
+          <div class="community-card-header">
+            <h2 class="community-card-title">
+              How do you maintain consistent prayer life?
+              <span class="joined-indicator"
+                ><i class="fas fa-check-circle"></i> Joined</span
+              >
+            </h2>
+            <span class="community-card-time"
+              >Started by Michael • 5 days ago</span
+            >
+          </div>
+          <div class="community-card-content">
+            <p>
+              I struggle with maintaining a consistent prayer routine. What
+              practical tips do you have for making prayer a regular habit? Do
+              you use prayer journals, apps, or specific methods that help you
+              stay consistent?
+            </p>
+          </div>
+          <div class="community-card-footer">
+            <div class="community-meta">
+              <div class="community-meta-item">
+                <i class="fas fa-comments"></i> 29 comments
+              </div>
+              <div class="community-meta-item">
+                <i class="fas fa-heart"></i> 18 likes
+              </div>
+            </div>
+            <div class="community-card-actions">
+              <button class="community-btn community-btn-outline">
+                <i class="fas fa-comment"></i> Add Comment
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Discussion Card -->
+        <div class="community-card">
+          <div class="community-card-header">
+            <h2 class="community-card-title">Dealing with Doubt in Faith</h2>
+            <span class="community-card-time"
+              >Started by Robert • 1 day ago</span
+            >
+          </div>
+          <div class="community-card-content">
+            <p>
+              I've been experiencing doubts about my faith recently. Has anyone
+              else gone through this? How did you work through it while
+              maintaining your relationship with God?
+            </p>
+          </div>
+          <div class="community-card-footer">
+            <div class="community-meta">
+              <div class="community-meta-item">
+                <i class="fas fa-comments"></i> 15 comments
+              </div>
+              <div class="community-meta-item">
+                <i class="fas fa-heart"></i> 10 likes
+              </div>
+            </div>
+            <div class="community-card-actions">
+              <button class="community-btn community-btn-primary">
+                <i class="fas fa-plus"></i> Join Discussion
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Groups Content (Hidden by default) -->
+      <div class="tab-content" id="groups-content" style="display: none">
+        <h2 style="margin: 0 0 20px; color: var(--primary)">Faith Groups</h2>
+        <p style="color: var(--gray); margin-bottom: 25px">
+          Connect with others who share your interests or life stage.
+        </p>
+
+        <!-- Groups Grid -->
+        <div class="groups-grid">
+          <div class="group-card">
+            <div class="group-icon">
+              <i class="fas fa-hands-praying"></i>
+            </div>
+            <h3 class="group-title">
+              Prayer Warriors
+              <span class="joined-indicator"
+                ><i class="fas fa-check-circle"></i> Joined</span
+              >
+            </h3>
+            <p class="group-desc">
+              A group dedicated to praying for one another and sharing prayer
+              requests.
+            </p>
+            <div class="group-members">
+              <i class="fas fa-users"></i> 243 members
+            </div>
+            <button
+              class="community-btn community-btn-outline"
+              style="margin-top: 15px; width: 100%"
+            >
+              <i class="fas fa-check"></i> Member
+            </button>
+          </div>
+
+          <div class="group-card">
+            <div class="group-icon">
+              <i class="fas fa-book"></i>
+            </div>
+            <h3 class="group-title">
+              Bible Study Group
+              <span class="joined-indicator"
+                ><i class="fas fa-check-circle"></i> Joined</span
+              >
+            </h3>
+            <p class="group-desc">
+              Weekly virtual Bible study exploring books of the Bible together.
+            </p>
+            <div class="group-members">
+              <i class="fas fa-users"></i> 187 members
+            </div>
+            <button
+              class="community-btn community-btn-outline"
+              style="margin-top: 15px; width: 100%"
+            >
+              <i class="fas fa-check"></i> Member
+            </button>
+          </div>
+
+          <div class="group-card">
+            <div class="group-icon">
+              <i class="fas fa-ring"></i>
+            </div>
+            <h3 class="group-title">Christian Marriage</h3>
+            <p class="group-desc">
+              Support and discussion for married couples seeking to strengthen
+              their relationship.
+            </p>
+            <div class="group-members">
+              <i class="fas fa-users"></i> 156 members
+            </div>
+            <button
+              class="community-btn community-btn-primary"
+              style="margin-top: 15px; width: 100%"
+            >
+              <i class="fas fa-plus"></i> Join Group
+            </button>
+          </div>
+
+          <div class="group-card">
+            <div class="group-icon">
+              <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h3 class="group-title">Young Adults</h3>
+            <p class="group-desc">
+              Community for young adults navigating faith, career, and
+              relationships.
+            </p>
+            <div class="group-members">
+              <i class="fas fa-users"></i> 321 members
+            </div>
+            <button
+              class="community-btn community-btn-primary"
+              style="margin-top: 15px; width: 100%"
+            >
+              <i class="fas fa-plus"></i> Join Group
+            </button>
+          </div>
+
+          <div class="group-card">
+            <div class="group-icon">
+              <i class="fas fa-hands-helping"></i>
+            </div>
+            <h3 class="group-title">Serving Together
+              <span class="joined-indicator"
+                ><i class="fas fa-check-circle"></i> Joined</span
+              >
+            </h3>
+            <p class="group-desc">
+              Organizing local service opportunities and mission projects.
+            </p>
+            <div class="group-members">
+              <i class="fas fa-users"></i> 134 members
+            </div>
+            <button
+              class="community-btn community-btn-outline"
+              style="margin-top: 15px; width: 100%"
+            >
+              <i class="fas fa-check"></i> Member
+            </button>
+          </div>
+
+          <div class="group-card">
+            <div class="group-icon">
+              <i class="fas fa-music"></i>
+            </div>
+            <h3 class="group-title">Worship & Music</h3>
+            <p class="group-desc">
+              Sharing worship music, hymns, and discussing the role of music in
+              faith.
+            </p>
+            <div class="group-members">
+              <i class="fas fa-users"></i> 210 members
+            </div>
+            <button
+              class="community-btn community-btn-primary"
+              style="margin-top: 15px; width: 100%"
+            >
+              <i class="fas fa-plus"></i> Join Group
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Events Content (Hidden by default) -->
+      <div class="tab-content" id="events-content" style="display: none">
+        <h2 style="margin: 0 0 20px; color: var(--primary)">
+          Community Events
+        </h2>
+        <p style="color: var(--gray); margin-bottom: 25px">
+          Join these upcoming community events.
+        </p>
+
+        <!-- Event Cards -->
+        <div class="community-card">
+          <div class="community-card-header">
+            <h2 class="community-card-title">
+              Virtual Prayer Night
+              <span class="joined-indicator"
+                ><i class="fas fa-check-circle"></i> Attending</span
+              >
+            </h2>
+            <span class="community-card-time"
+              >September 20, 2023 • 7:00 PM EST</span
+            >
+          </div>
+          <div class="community-card-content">
+            <p>
+              Join us for a night of prayer and worship. We'll be praying for
+              our community, our leaders, and personal requests. All are
+              welcome!
+            </p>
+            <p>
+              <i class="fas fa-video" style="color: var(--primary)"></i> This is
+              a virtual event on Zoom
+            </p>
+          </div>
+          <div class="community-card-footer">
+            <div class="community-meta">
+              <div class="community-meta-item">
+                <i class="fas fa-users"></i> 48 attending
+              </div>
+            </div>
+            <div class="community-card-actions">
+              <button class="community-btn community-btn-outline">
+                <i class="fas fa-check-circle"></i> Attending
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-card-header">
+            <h2 class="community-card-title">Bible Study: Book of James</h2>
+            <span class="community-card-time"
+              >Starts September 25, 2023 • Weekly on Mondays</span
+            >
+          </div>
+          <div class="community-card-content">
+            <p>
+              Join our 6-week study on the Book of James. We'll explore
+              practical faith and how to live out our beliefs in daily life. No
+              prior Bible study experience needed!
+            </p>
+            <p>
+              <i class="fas fa-video" style="color: var(--primary)"></i> Virtual
+              study group
+            </p>
+          </div>
+          <div class="community-card-footer">
+            <div class="community-meta">
+              <div class="community-meta-item">
+                <i class="fas fa-users"></i> 32 attending
+              </div>
+            </div>
+            <div class="community-card-actions">
+              <button class="community-btn community-btn-primary">
+                <i class="fas fa-calendar-check"></i> Attend
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-card-header">
+            <h2 class="community-card-title">
+              Community Service Day
+              <span class="joined-indicator"
+                ><i class="fas fa-check-circle"></i> Attending</span
+              >
+            </h2>
+            <span class="community-card-time"
+              >October 5, 2023 • 9:00 AM - 2:00 PM EST</span
+            >
+          </div>
+          <div class="community-card-content">
+            <p>
+              We're partnering with local food banks to serve our community.
+              Join us for a day of service and making a difference. All ages
+              welcome!
+            </p>
+            <p>
+              <i
+                class="fas fa-map-marker-alt"
+                style="color: var(--primary)"
+              ></i>
+              City Community Center
+            </p>
+          </div>
+          <div class="community-card-footer">
+            <div class="community-meta">
+              <div class="community-meta-item">
+                <i class="fas fa-users"></i> 27 attending
+              </div>
+            </div>
+            <div class="community-card-actions">
+              <button class="community-btn community-btn-outline">
+                <i class="fas fa-check-circle"></i> Attending
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="community-card-header">
+            <h2 class="community-card-title">Women's Retreat</h2>
+            <span class="community-card-time">October 15-17, 2023</span>
+          </div>
+          <div class="community-card-content">
+            <p>
+              A weekend retreat for women to connect, reflect, and grow in
+              faith. Featuring guest speakers, worship, and small group
+              discussions.
+            </p>
+            <p>
+              <i
+                class="fas fa-map-marker-alt"
+                style="color: var(--primary)"
+              ></i>
+              Mountain View Retreat Center
+            </p>
+          </div>
+          <div class="community-card-footer">
+            <div class="community-meta">
+              <div class="community-meta-item">
+                <i class="fas fa-users"></i> 18 attending
+              </div>
+            </div>
+            <div class="community-card-actions">
+              <button class="community-btn community-btn-primary">
+                <i class="fas fa-calendar-check"></i> Attend
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add Post Button -->
+    <div class="add-post-btn">
+      <i class="fas fa-plus"></i>
+    </div>
+
+    <!-- Bottom Navigation (for mobile) -->
+    <div class="bottom-nav">
+      <a href="#" class="nav-item">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-book"></i>
+        <span>Bible</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-pray"></i>
+        <span>Prayer</span>
+      </a>
+      <a href="#" class="nav-item active">
+        <i class="fas fa-users"></i>
+        <span>Community</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+    </div>
+
+    <script>
+      // Tab functionality
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+
+      tabBtns.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          // Remove active class from all buttons
+          tabBtns.forEach((b) => b.classList.remove('active'));
+          // Add active class to clicked button
+          btn.classList.add('active');
+
+          // Hide all tab contents
+          tabContents.forEach((content) => (content.style.display = 'none'));
+
+          // Show the selected tab content
+          const tabId = btn.getAttribute('data-tab');
+          document.getElementById(`${tabId}-content`).style.display = 'block';
+        });
+      });
+
+      // Add Post Button functionality
+      const addPostBtn = document.querySelector('.add-post-btn');
+      addPostBtn.addEventListener('click', () => {
+        alert('Create new post or discussion');
+      });
+
+      // Join Group button functionality
+      document
+        .querySelectorAll('.group-card .community-btn-primary')
+        .forEach((btn) => {
+          btn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const groupName =
+              this.closest('.group-card').querySelector(
+                '.group-title'
+              ).textContent;
+            this.innerHTML = '<i class="fas fa-check"></i> Member';
+            this.classList.remove('community-btn-primary');
+            this.classList.add('community-btn-outline');
+
+            // Add joined indicator
+            const titleElement =
+              this.closest('.group-card').querySelector('.group-title');
+            if (!titleElement.querySelector('.joined-indicator')) {
+              titleElement.innerHTML +=
+                ' <span class="joined-indicator"><i class="fas fa-check-circle"></i> Joined</span>';
+            }
+
+            alert(`You've joined the ${groupName.replace(' Joined', '')}!`);
+          });
+        });
+
+      // Join Discussion button functionality
+      document
+        .querySelectorAll('.community-card .community-btn-primary')
+        .forEach((btn) => {
+          btn.addEventListener('click', function () {
+            if (this.innerHTML.includes('Join Discussion')) {
+              const discussionTitle = this.closest(
+                '.community-card'
+              ).querySelector('.community-card-title').textContent;
+              this.innerHTML = '<i class="fas fa-comment"></i> Add Comment';
+              this.classList.remove('community-btn-primary');
+              this.classList.add('community-btn-outline');
+
+              // Add joined indicator
+              const titleElement = this.closest(
+                '.community-card'
+              ).querySelector('.community-card-title');
+              if (!titleElement.querySelector('.joined-indicator')) {
+                titleElement.innerHTML +=
+                  ' <span class="joined-indicator"><i class="fas fa-check-circle"></i> Joined</span>';
+              }
+
+              alert(
+                `You've joined the discussion: ${discussionTitle.replace(
+                  ' Joined',
+                  ''
+                )}`
+              );
+            }
+          });
+        });
+
+      // Attend Event button functionality
+      document
+        .querySelectorAll('#events-content .community-btn-primary')
+        .forEach((btn) => {
+          btn.addEventListener('click', function () {
+            const eventTitle = this.closest('.community-card').querySelector(
+              '.community-card-title'
+            ).textContent;
+            this.innerHTML = '<i class="fas fa-check-circle"></i> Attending';
+            this.classList.remove('community-btn-primary');
+            this.classList.add('community-btn-outline');
+
+            // Add joined indicator
+            const titleElement = this.closest('.community-card').querySelector(
+              '.community-card-title'
+            );
+            if (!titleElement.querySelector('.joined-indicator')) {
+              titleElement.innerHTML +=
+                ' <span class="joined-indicator"><i class="fas fa-check-circle"></i> Attending</span>';
+            }
+
+            alert(`You're attending: ${eventTitle.replace(' Attending', '')}`);
+          });
+        });
+
+      // Simulate search functionality
+      document.getElementById('search-btn').addEventListener('click', () => {
+        alert('Search community discussions and groups');
+      });
+
+      // Simulate notifications functionality
+      document
+        .getElementById('notifications-btn')
+        .addEventListener('click', () => {
+          alert('View notifications');
+        });
+
+      // Simulate profile functionality
+      document.getElementById('profile-btn').addEventListener('click', () => {
+        alert('Profile screen would open here');
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scriptura - Audio Bible</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary: #3a6b7e;
+        --secondary: #8a5a44;
+        --accent: #d39d5b;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --gray: #6c757d;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+        --audio: #5a7e8c;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        background-color: #f5f7f9;
+        color: var(--dark);
+        line-height: 1.6;
+        padding-bottom: 70px; /* Space for bottom nav */
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      /* Header */
+      header {
+        background: linear-gradient(135deg, var(--primary), #2c5868);
+        color: white;
+        padding: 15px 0;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 8px;
+        color: var(--accent);
+      }
+
+      .user-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .user-actions button {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        margin-left: 15px;
+        font-size: 1rem;
+      }
+
+      /* Audio Bible Header */
+      .audio-header {
+        text-align: center;
+        margin: 25px 0;
+      }
+
+      .audio-header h1 {
+        color: var(--primary);
+        font-size: 2.2rem;
+        margin-bottom: 10px;
+      }
+
+      .audio-header p {
+        color: var(--gray);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      /* Audio Player Section */
+      .audio-player-section {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 25px;
+        margin-bottom: 25px;
+        text-align: center;
+      }
+
+      .book-selector {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .nav-btn {
+        background: var(--light);
+        border: 1px solid #ddd;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .nav-btn:hover {
+        background: #e9ecef;
+      }
+
+      .nav-title {
+        margin: 0 15px;
+        text-align: center;
+        min-width: 120px;
+      }
+
+      .nav-title h2 {
+        font-size: 1.2rem;
+        color: var(--primary);
+      }
+
+      .nav-title span {
+        font-size: 0.9rem;
+        color: var(--gray);
+      }
+
+      /* Audio Player */
+      .audio-player {
+        background: linear-gradient(135deg, var(--primary), #2c5868);
+        border-radius: 12px;
+        padding: 25px;
+        color: white;
+        margin-bottom: 20px;
+      }
+
+      .player-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .player-info h3 {
+        font-size: 1.3rem;
+        margin-bottom: 5px;
+      }
+
+      .player-info p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+      }
+
+      .player-controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 20px 0;
+      }
+
+      .progress-container {
+        width: 100%;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 3px;
+        margin-bottom: 10px;
+        cursor: pointer;
+      }
+
+      .progress {
+        height: 100%;
+        background: var(--accent);
+        border-radius: 3px;
+        width: 30%; /* This would be dynamic in a real app */
+      }
+
+      .time-display {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        font-size: 0.8rem;
+        opacity: 0.9;
+        margin-bottom: 15px;
+      }
+
+      .control-buttons {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .play-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: white;
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .play-btn:hover {
+        transform: scale(1.05);
+      }
+
+      .control-btn {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 1.2rem;
+        opacity: 0.8;
+        transition: var(--transition);
+      }
+
+      .control-btn:hover {
+        opacity: 1;
+      }
+
+      .player-options {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+      }
+
+      .option-btn {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        opacity: 0.8;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .option-btn:hover {
+        opacity: 1;
+      }
+
+      /* Playlist Section */
+      .playlist-section {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 25px;
+        margin-bottom: 25px;
+      }
+
+      .section-title {
+        font-size: 1.3rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f1f1f1;
+      }
+
+      .playlist-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        transition: var(--transition);
+        cursor: pointer;
+      }
+
+      .playlist-item:hover {
+        background: #f8f9fa;
+      }
+
+      .playlist-item.active {
+        background: #e8f4f8;
+        border-left: 4px solid var(--primary);
+      }
+
+      .playlist-item-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background: #f0f5f7;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        margin-right: 15px;
+      }
+
+      .playlist-item-info {
+        flex: 1;
+      }
+
+      .playlist-item-info h4 {
+        font-size: 1rem;
+        margin-bottom: 4px;
+      }
+
+      .playlist-item-info p {
+        font-size: 0.85rem;
+        color: var(--gray);
+      }
+
+      .playlist-item-duration {
+        color: var(--gray);
+        font-size: 0.9rem;
+      }
+
+      /* Books Grid */
+      .books-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        margin-top: 15px;
+      }
+
+      .book-item {
+        background: #f1f5f7;
+        border-radius: 8px;
+        padding: 15px 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .book-item:hover {
+        background: #e8edf0;
+        transform: translateY(-3px);
+      }
+
+      .book-item i {
+        font-size: 1.5rem;
+        color: var(--secondary);
+        margin-bottom: 8px;
+      }
+
+      /* Bottom Navigation */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        background: white;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        padding: 10px 0;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: var(--gray);
+        font-size: 0.75rem;
+        transition: var(--transition);
+      }
+
+      .nav-item i {
+        font-size: 1.25rem;
+        margin-bottom: 4px;
+      }
+
+      .nav-item.active {
+        color: var(--primary);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .book-selector {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .control-buttons {
+          gap: 10px;
+        }
+
+        .play-btn {
+          width: 50px;
+          height: 50px;
+        }
+
+        .books-grid {
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
+
+        .audio-header h1 {
+          font-size: 1.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-bible"></i>
+            <span>Scriptura</span>
+          </div>
+          <div class="user-actions">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+            <button id="download-btn"><i class="fas fa-download"></i></button>
+            <button id="profile-btn"><i class="fas fa-user-circle"></i></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Audio Bible Header -->
+      <div class="audio-header">
+        <h1>Audio Bible</h1>
+        <p>
+          Listen to God's Word anytime, anywhere. Select a book and chapter to
+          begin.
+        </p>
+      </div>
+
+      <!-- Audio Player Section -->
+      <div class="audio-player-section">
+        <!-- Book Selector -->
+        <div class="book-selector">
+          <div class="nav-btn" id="prev-book">
+            <i class="fas fa-chevron-left"></i>
+          </div>
+          <div class="nav-title">
+            <h2 id="current-book">John</h2>
+            <span>Book</span>
+          </div>
+          <div class="nav-btn" id="next-book">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+
+          <div class="nav-btn" id="prev-chapter">
+            <i class="fas fa-chevron-left"></i>
+          </div>
+          <div class="nav-title">
+            <h2 id="current-chapter">3</h2>
+            <span>Chapter</span>
+          </div>
+          <div class="nav-btn" id="next-chapter">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <!-- Audio Player -->
+        <div class="audio-player">
+          <div class="player-header">
+            <div class="player-info">
+              <h3>John 3:1-21</h3>
+              <p>ESV Version • Narrator: David Heath</p>
+            </div>
+            <div class="player-options">
+              <button class="option-btn">
+                <i class="fas fa-heart"></i> Favorite
+              </button>
+              <button class="option-btn">
+                <i class="fas fa-share-alt"></i> Share
+              </button>
+            </div>
+          </div>
+
+          <div class="player-controls">
+            <div class="progress-container">
+              <div class="progress"></div>
+            </div>
+            <div class="time-display">
+              <span>2:45</span>
+              <span>9:20</span>
+            </div>
+            <div class="control-buttons">
+              <button class="control-btn">
+                <i class="fas fa-step-backward"></i>
+              </button>
+              <button class="control-btn">
+                <i class="fas fa-backward"></i>
+              </button>
+              <button class="play-btn">
+                <i class="fas fa-play"></i>
+              </button>
+              <button class="control-btn">
+                <i class="fas fa-forward"></i>
+              </button>
+              <button class="control-btn">
+                <i class="fas fa-step-forward"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="player-options">
+            <button class="option-btn">
+              <i class="fas fa-volume-up"></i>
+            </button>
+            <button class="option-btn">
+              <i class="fas fa-cog"></i> Settings
+            </button>
+          </div>
+        </div>
+
+        <!-- Version Selector -->
+        <div
+          style="
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+          "
+        >
+          <button
+            class="btn"
+            style="
+              background: #e8f4f8;
+              color: var(--primary);
+              border: none;
+              padding: 8px 15px;
+              border-radius: 20px;
+              font-size: 0.9rem;
+            "
+          >
+            ESV
+          </button>
+          <button
+            class="btn"
+            style="
+              background: #f0f0f0;
+              color: var(--gray);
+              border: none;
+              padding: 8px 15px;
+              border-radius: 20px;
+              font-size: 0.9rem;
+            "
+          >
+            NIV
+          </button>
+          <button
+            class="btn"
+            style="
+              background: #f0f0f0;
+              color: var(--gray);
+              border: none;
+              padding: 8px 15px;
+              border-radius: 20px;
+              font-size: 0.9rem;
+            "
+          >
+            KJV
+          </button>
+        </div>
+      </div>
+
+      <!-- Playlist Section -->
+      <div class="playlist-section">
+        <h2 class="section-title">Current Chapter</h2>
+
+        <div class="playlist-item active">
+          <div class="playlist-item-icon">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="playlist-item-info">
+            <h4>John 3:1-8</h4>
+            <p>Jesus and Nicodemus</p>
+          </div>
+          <div class="playlist-item-duration">2:45</div>
+        </div>
+
+        <div class="playlist-item">
+          <div class="playlist-item-icon">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="playlist-item-info">
+            <h4>John 3:9-15</h4>
+            <p>Born of the Spirit</p>
+          </div>
+          <div class="playlist-item-duration">3:12</div>
+        </div>
+
+        <div class="playlist-item">
+          <div class="playlist-item-icon">
+            <i class="fas fa-play-circle"></i>
+          </div>
+          <div class="playlist-item-info">
+            <h4>John 3:16-21</h4>
+            <p>For God so loved the world</p>
+          </div>
+          <div class="playlist-item-duration">3:23</div>
+        </div>
+      </div>
+
+      <!-- Books Section -->
+      <div class="playlist-section">
+        <h2 class="section-title">Books of the Bible</h2>
+        <p style="color: var(--gray); margin-bottom: 15px">
+          Select a book to listen to
+        </p>
+
+        <div class="books-grid">
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Matthew</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Mark</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Luke</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>John</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Acts</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Romans</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Psalms</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Proverbs</div>
+          </div>
+        </div>
+
+        <button
+          class="btn"
+          style="
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: #f0f5f7;
+            border: none;
+            border-radius: 8px;
+            color: var(--primary);
+            font-weight: 500;
+          "
+        >
+          <i class="fas fa-book-open"></i> View All Books
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation (for mobile) -->
+    <div class="bottom-nav">
+      <a href="#" class="nav-item">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-book"></i>
+        <span>Bible</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-pray"></i>
+        <span>Prayer</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-headphones"></i>
+        <span>Audio</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+    </div>
+
+    <script>
+      // Bible data for demonstration
+      const bibleData = {
+        books: [
+          'Genesis',
+          'Exodus',
+          'Leviticus',
+          'Numbers',
+          'Deuteronomy',
+          'Joshua',
+          'Judges',
+          'Ruth',
+          '1 Samuel',
+          '2 Samuel',
+          '1 Kings',
+          '2 Kings',
+          '1 Chronicles',
+          '2 Chronicles',
+          'Ezra',
+          'Nehemiah',
+          'Esther',
+          'Job',
+          'Psalms',
+          'Proverbs',
+          'Ecclesiastes',
+          'Song of Solomon',
+          'Isaiah',
+          'Jeremiah',
+          'Lamentations',
+          'Ezekiel',
+          'Daniel',
+          'Hosea',
+          'Joel',
+          'Amos',
+          'Obadiah',
+          'Jonah',
+          'Micah',
+          'Nahum',
+          'Habakkuk',
+          'Zephaniah',
+          'Haggai',
+          'Zechariah',
+          'Malachi',
+          'Matthew',
+          'Mark',
+          'Luke',
+          'John',
+          'Acts',
+          'Romans',
+          '1 Corinthians',
+          '2 Corinthians',
+          'Galatians',
+          'Ephesians',
+          'Philippians',
+          'Colossians',
+          '1 Thessalonians',
+          '2 Thessalonians',
+          '1 Timothy',
+          '2 Timothy',
+          'Titus',
+          'Philemon',
+          'Hebrews',
+          'James',
+          '1 Peter',
+          '2 Peter',
+          '1 John',
+          '2 John',
+          '3 John',
+          'Jude',
+          'Revelation',
+        ],
+        currentBookIndex: 42, // John
+        currentChapter: 3,
+      };
+
+      // DOM Elements
+      const currentBookElement = document.getElementById('current-book');
+      const currentChapterElement = document.getElementById('current-chapter');
+      const prevBookBtn = document.getElementById('prev-book');
+      const nextBookBtn = document.getElementById('next-book');
+      const prevChapterBtn = document.getElementById('prev-chapter');
+      const nextChapterBtn = document.getElementById('next-chapter');
+      const playBtn = document.querySelector('.play-btn');
+      const progressContainer = document.querySelector('.progress-container');
+      const progress = document.querySelector('.progress');
+      const playlistItems = document.querySelectorAll('.playlist-item');
+      const bookItems = document.querySelectorAll('.book-item');
+
+      // Initialize
+      updateBibleNavigation();
+
+      // Event Listeners
+      prevBookBtn.addEventListener('click', () => {
+        if (bibleData.currentBookIndex > 0) {
+          bibleData.currentBookIndex--;
+          updateBibleNavigation();
+        }
+      });
+
+      nextBookBtn.addEventListener('click', () => {
+        if (bibleData.currentBookIndex < bibleData.books.length - 1) {
+          bibleData.currentBookIndex++;
+          updateBibleNavigation();
+        }
+      });
+
+      prevChapterBtn.addEventListener('click', () => {
+        if (bibleData.currentChapter > 1) {
+          bibleData.currentChapter--;
+          updateBibleNavigation();
+        }
+      });
+
+      nextChapterBtn.addEventListener('click', () => {
+        // In a real app, we would check the actual number of chapters in the book
+        bibleData.currentChapter++;
+        updateBibleNavigation();
+      });
+
+      // Play button functionality
+      playBtn.addEventListener('click', function () {
+        const icon = this.querySelector('i');
+        if (icon.classList.contains('fa-play')) {
+          icon.classList.remove('fa-play');
+          icon.classList.add('fa-pause');
+          simulatePlayback();
+        } else {
+          icon.classList.remove('fa-pause');
+          icon.classList.add('fa-play');
+        }
+      });
+
+      // Progress bar interaction
+      progressContainer.addEventListener('click', (e) => {
+        const width = progressContainer.clientWidth;
+        const clickX = e.offsetX;
+        const percent = clickX / width;
+        progress.style.width = `${percent * 100}%`;
+
+        // Update time display (simulated)
+        const totalTime = 560; // 9:20 in seconds
+        const newTime = totalTime * percent;
+        const minutes = Math.floor(newTime / 60);
+        const seconds = Math.floor(newTime % 60);
+        document.querySelector(
+          '.time-display span:first-child'
+        ).textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+      });
+
+      // Playlist item selection
+      playlistItems.forEach((item) => {
+        item.addEventListener('click', function () {
+          playlistItems.forEach((i) => i.classList.remove('active'));
+          this.classList.add('active');
+
+          // Reset and play the selected item
+          const playIcon = playBtn.querySelector('i');
+          playIcon.classList.remove('fa-pause');
+          playIcon.classList.add('fa-play');
+          progress.style.width = '0%';
+          document.querySelector('.time-display span:first-child').textContent =
+            '0:00';
+        });
+      });
+
+      // Book item selection
+      bookItems.forEach((item) => {
+        item.addEventListener('click', function () {
+          const bookName = this.querySelector('div').textContent;
+          const bookIndex = bibleData.books.findIndex(
+            (book) => book === bookName
+          );
+          if (bookIndex !== -1) {
+            bibleData.currentBookIndex = bookIndex;
+            bibleData.currentChapter = 1;
+            updateBibleNavigation();
+
+            // Scroll to top
+            window.scrollTo({
+              top: 0,
+              behavior: 'smooth',
+            });
+          }
+        });
+      });
+
+      // Simulate playback (for demonstration)
+      function simulatePlayback() {
+        let width = 0;
+        const interval = setInterval(() => {
+          if (
+            width >= 100 ||
+            !playBtn.querySelector('i').classList.contains('fa-pause')
+          ) {
+            clearInterval(interval);
+            return;
+          }
+
+          width += 0.5;
+          progress.style.width = `${width}%`;
+
+          // Update time display (simulated)
+          const totalTime = 560; // 9:20 in seconds
+          const currentTime = totalTime * (width / 100);
+          const minutes = Math.floor(currentTime / 60);
+          const seconds = Math.floor(currentTime % 60);
+          document.querySelector(
+            '.time-display span:first-child'
+          ).textContent = `${minutes}:${
+            seconds < 10 ? '0' + seconds : seconds
+          }`;
+        }, 1000);
+      }
+
+      // Function to update Bible navigation
+      function updateBibleNavigation() {
+        currentBookElement.textContent =
+          bibleData.books[bibleData.currentBookIndex];
+        currentChapterElement.textContent = bibleData.currentChapter;
+
+        // Update player info
+        document.querySelector('.player-info h3').textContent = `${
+          bibleData.books[bibleData.currentBookIndex]
+        } ${bibleData.currentChapter}:1-21`;
+
+        // Update document title
+        document.title = `${bibleData.books[bibleData.currentBookIndex]} ${
+          bibleData.currentChapter
+        } - Audio Bible - Scriptura`;
+      }
+
+      // Simulate search functionality
+      document.getElementById('search-btn').addEventListener('click', () => {
+        alert('Search audio Bible content');
+      });
+
+      // Simulate download functionality
+      document.getElementById('download-btn').addEventListener('click', () => {
+        alert('Download audio for offline listening');
+      });
+
+      // Simulate profile functionality
+      document.getElementById('profile-btn').addEventListener('click', () => {
+        alert('Profile screen would open here');
+      });
+    </script>
+  </body>
+</html>

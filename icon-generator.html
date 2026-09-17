@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scriptura Icon Generator</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary: #3a6b7e;
+        --secondary: #8a5a44;
+        --accent: #d39d5b;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --gray: #6c757d;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7f9 0%, #e8f4f8 100%);
+        color: var(--dark);
+        line-height: 1.6;
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+      }
+
+      h1 {
+        color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+      }
+
+      .subtitle {
+        color: var(--gray);
+        font-size: 1.1rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .main-content {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+
+      .icon-preview {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .preview-title {
+        font-size: 1.2rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      #icon-display {
+        width: 200px;
+        height: 200px;
+        border-radius: 25%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        transition: var(--transition);
+      }
+
+      .icon-controls {
+        flex: 1;
+        min-width: 300px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 30px;
+      }
+
+      .control-group {
+        margin-bottom: 25px;
+      }
+
+      .control-title {
+        font-size: 1.1rem;
+        color: var(--primary);
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .color-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .color-option {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: var(--transition);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .color-option:hover {
+        transform: scale(1.1);
+      }
+
+      .color-option.active {
+        transform: scale(1.15);
+        box-shadow: 0 0 0 3px white, 0 0 0 5px var(--primary);
+      }
+
+      .slider-container {
+        margin-bottom: 15px;
+      }
+
+      .slider-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dark);
+      }
+
+      .slider {
+        width: 100%;
+        height: 8px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: #e9ecef;
+        outline: none;
+        border-radius: 4px;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: var(--primary);
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .slider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+      }
+
+      .icon-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .icon-option {
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        background: #f8f9fa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 1.5rem;
+        color: var(--gray);
+      }
+
+      .icon-option:hover {
+        background: #e9ecef;
+        transform: scale(1.05);
+      }
+
+      .icon-option.active {
+        background: var(--primary);
+        color: white;
+        transform: scale(1.1);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: var(--transition);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: #2c5868;
+        transform: translateY(-2px);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--primary);
+        color: var(--primary);
+      }
+
+      .btn-outline:hover {
+        background: #f0f5f7;
+        transform: translateY(-2px);
+      }
+
+      .download-section {
+        text-align: center;
+        margin-top: 30px;
+      }
+
+      .size-options {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .size-option {
+        padding: 8px 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .size-option:hover {
+        border-color: var(--primary);
+      }
+
+      .size-option.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 40px;
+        color: var(--gray);
+        font-size: 0.9rem;
+        padding: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .main-content {
+          flex-direction: column;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Scriptura Icon Generator</h1>
+        <p class="subtitle">
+          Create a beautiful, custom icon for your Bible app
+        </p>
+      </header>
+
+      <div class="main-content">
+        <div class="icon-preview">
+          <h2 class="preview-title">Icon Preview</h2>
+          <div
+            id="icon-display"
+            style="background: linear-gradient(135deg, #3a6b7e, #2c5868)"
+          >
+            <i class="fas fa-bible" style="font-size: 80px; color: white"></i>
+          </div>
+          <p>Current Style: Classic Bible</p>
+        </div>
+
+        <div class="icon-controls">
+          <div class="control-group">
+            <h3 class="control-title">Background Color</h3>
+            <div class="color-options">
+              <div
+                class="color-option active"
+                style="background: linear-gradient(135deg, #3a6b7e, #2c5868)"
+                data-color="default"
+              ></div>
+              <div
+                class="color-option"
+                style="background: linear-gradient(135deg, #8a5a44, #6d4935)"
+                data-color="brown"
+              ></div>
+              <div
+                class="color-option"
+                style="background: linear-gradient(135deg, #d39d5b, #b48347)"
+                data-color="gold"
+              ></div>
+              <div
+                class="color-option"
+                style="background: linear-gradient(135deg, #28a745, #1e7e34)"
+                data-color="green"
+              ></div>
+              <div
+                class="color-option"
+                style="background: linear-gradient(135deg, #6f42c1, #563d7c)"
+                data-color="purple"
+              ></div>
+              <div
+                class="color-option"
+                style="background: linear-gradient(135deg, #fd7e14, #e66407)"
+                data-color="orange"
+              ></div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h3 class="control-title">Icon Style</h3>
+            <div class="icon-options">
+              <div class="icon-option active" data-icon="bible">
+                <i class="fas fa-bible"></i>
+              </div>
+              <div class="icon-option" data-icon="cross">
+                <i class="fas fa-cross"></i>
+              </div>
+              <div class="icon-option" data-icon="prayer">
+                <i class="fas fa-pray"></i>
+              </div>
+              <div class="icon-option" data-icon="hands">
+                <i class="fas fa-hands-praying"></i>
+              </div>
+              <div class="icon-option" data-icon="church">
+                <i class="fas fa-church"></i>
+              </div>
+              <div class="icon-option" data-icon="dove">
+                <i class="fas fa-dove"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h3 class="control-title">Icon Size</h3>
+            <div class="slider-container">
+              <label for="icon-size">Adjust icon size</label>
+              <input
+                type="range"
+                min="50"
+                max="100"
+                value="80"
+                class="slider"
+                id="icon-size"
+              />
+            </div>
+          </div>
+
+          <div class="control-group">
+            <h3 class="control-title">Icon Color</h3>
+            <div class="color-options">
+              <div
+                class="color-option active"
+                style="background: #ffffff"
+                data-icon-color="white"
+              ></div>
+              <div
+                class="color-option"
+                style="background: #f8f9fa"
+                data-icon-color="light"
+              ></div>
+              <div
+                class="color-option"
+                style="background: #ffd43b"
+                data-icon-color="yellow"
+              ></div>
+              <div
+                class="color-option"
+                style="background: #d39d5b"
+                data-icon-color="gold"
+              ></div>
+              <div
+                class="color-option"
+                style="background: #e9ecef"
+                data-icon-color="gray"
+              ></div>
+              <div
+                class="color-option"
+                style="background: #fff5e6"
+                data-icon-color="cream"
+              ></div>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button class="btn btn-primary" id="random-btn">
+              <i class="fas fa-random"></i> Random Design
+            </button>
+            <button class="btn btn-outline" id="reset-btn">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="download-section">
+        <h3 class="control-title">Download Options</h3>
+        <div class="size-options">
+          <div class="size-option active" data-size="512">512×512</div>
+          <div class="size-option" data-size="256">256×256</div>
+          <div class="size-option" data-size="128">128×128</div>
+          <div class="size-option" data-size="64">64×64</div>
+        </div>
+        <button class="btn btn-primary" id="download-btn">
+          <i class="fas fa-download"></i> Download Icon
+        </button>
+      </div>
+
+      <footer>
+        <p>
+          Generated icons can be used freely for your projects. For best
+          results, use the 512×512 size for app stores.
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        // Get DOM elements
+        const iconDisplay = document.getElementById('icon-display');
+        const iconElement = iconDisplay.querySelector('i');
+        const colorOptions = document.querySelectorAll(
+          '.color-option:not([data-icon-color])'
+        );
+        const iconColorOptions = document.querySelectorAll(
+          '.color-option[data-icon-color]'
+        );
+        const iconOptions = document.querySelectorAll('.icon-option');
+        const iconSizeSlider = document.getElementById('icon-size');
+        const randomBtn = document.getElementById('random-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const sizeOptions = document.querySelectorAll('.size-option');
+
+        // Current settings
+        let currentSettings = {
+          bgColor: 'default',
+          iconStyle: 'bible',
+          iconSize: 80,
+          iconColor: 'white',
+        };
+
+        // Color definitions
+        const colorSchemes = {
+          default: ['#3a6b7e', '#2c5868'],
+          brown: ['#8a5a44', '#6d4935'],
+          gold: ['#d39d5b', '#b48347'],
+          green: ['#28a745', '#1e7e34'],
+          purple: ['#6f42c1', '#563d7c'],
+          orange: ['#fd7e14', '#e66407'],
+        };
+
+        const iconColors = {
+          white: '#ffffff',
+          light: '#f8f9fa',
+          yellow: '#ffd43b',
+          gold: '#d39d5b',
+          gray: '#e9ecef',
+          cream: '#fff5e6',
+        };
+
+        // Icon definitions
+        const icons = {
+          bible: 'fa-bible',
+          cross: 'fa-cross',
+          prayer: 'fa-pray',
+          hands: 'fa-hands-praying',
+          church: 'fa-church',
+          dove: 'fa-dove',
+        };
+
+        // Set active option
+        function setActiveOption(options, dataValue) {
+          options.forEach((option) => {
+            if (
+              option.getAttribute('data-color') === dataValue ||
+              option.getAttribute('data-icon') === dataValue ||
+              option.getAttribute('data-icon-color') === dataValue
+            ) {
+              option.classList.add('active');
+            } else {
+              option.classList.remove('active');
+            }
+          });
+        }
+
+        // Update icon display
+        function updateIconDisplay() {
+          // Update background
+          const colors = colorSchemes[currentSettings.bgColor];
+          iconDisplay.style.background = `linear-gradient(135deg, ${colors[0]}, ${colors[1]})`;
+
+          // Update icon
+          iconElement.className = `fas ${icons[currentSettings.iconStyle]}`;
+
+          // Update icon size
+          iconElement.style.fontSize = `${currentSettings.iconSize}px`;
+
+          // Update icon color
+          iconElement.style.color = iconColors[currentSettings.iconColor];
+        }
+
+        // Background color event listeners
+        colorOptions.forEach((option) => {
+          option.addEventListener('click', function () {
+            const color = this.getAttribute('data-color');
+            currentSettings.bgColor = color;
+            setActiveOption(colorOptions, color);
+            updateIconDisplay();
+          });
+        });
+
+        // Icon color event listeners
+        iconColorOptions.forEach((option) => {
+          option.addEventListener('click', function () {
+            const color = this.getAttribute('data-icon-color');
+            currentSettings.iconColor = color;
+            setActiveOption(iconColorOptions, color);
+            updateIconDisplay();
+          });
+        });
+
+        // Icon style event listeners
+        iconOptions.forEach((option) => {
+          option.addEventListener('click', function () {
+            const icon = this.getAttribute('data-icon');
+            currentSettings.iconStyle = icon;
+            setActiveOption(iconOptions, icon);
+            updateIconDisplay();
+          });
+        });
+
+        // Icon size event listener
+        iconSizeSlider.addEventListener('input', function () {
+          currentSettings.iconSize = this.value;
+          updateIconDisplay();
+        });
+
+        // Random design button
+        randomBtn.addEventListener('click', function () {
+          // Random background color
+          const colorKeys = Object.keys(colorSchemes);
+          const randomColor =
+            colorKeys[Math.floor(Math.random() * colorKeys.length)];
+          currentSettings.bgColor = randomColor;
+          setActiveOption(colorOptions, randomColor);
+
+          // Random icon
+          const iconKeys = Object.keys(icons);
+          const randomIcon =
+            iconKeys[Math.floor(Math.random() * iconKeys.length)];
+          currentSettings.iconStyle = randomIcon;
+          setActiveOption(iconOptions, randomIcon);
+
+          // Random icon color
+          const iconColorKeys = Object.keys(iconColors);
+          const randomIconColor =
+            iconColorKeys[Math.floor(Math.random() * iconColorKeys.length)];
+          currentSettings.iconColor = randomIconColor;
+          setActiveOption(iconColorOptions, randomIconColor);
+
+          // Random size
+          currentSettings.iconSize = Math.floor(Math.random() * 31) + 60; // 60-90
+          iconSizeSlider.value = currentSettings.iconSize;
+
+          updateIconDisplay();
+        });
+
+        // Reset button
+        resetBtn.addEventListener('click', function () {
+          currentSettings = {
+            bgColor: 'default',
+            iconStyle: 'bible',
+            iconSize: 80,
+            iconColor: 'white',
+          };
+
+          setActiveOption(colorOptions, 'default');
+          setActiveOption(iconOptions, 'bible');
+          setActiveOption(iconColorOptions, 'white');
+          iconSizeSlider.value = 80;
+
+          updateIconDisplay();
+        });
+
+        // Size options
+        sizeOptions.forEach((option) => {
+          option.addEventListener('click', function () {
+            sizeOptions.forEach((opt) => opt.classList.remove('active'));
+            this.classList.add('active');
+          });
+        });
+
+        // Download button
+        downloadBtn.addEventListener('click', function () {
+          const selectedSize = document
+            .querySelector('.size-option.active')
+            .getAttribute('data-size');
+          alert(
+            `In a real implementation, this would download a ${selectedSize}×${selectedSize} PNG version of your icon.`
+          );
+
+          // In a real implementation, you would use html2canvas or similar to convert the icon to an image
+          // For example:
+          // html2canvas(iconDisplay).then(canvas => {
+          //     const link = document.createElement('a');
+          //     link.download = `scriptura-icon-${selectedSize}.png`;
+          //     link.href = canvas.toDataURL('image/png');
+          //     link.click();
+          // });
+        });
+
+        // Initialize
+        updateIconDisplay();
+      });
+    </script>
+  </body>
+</html>

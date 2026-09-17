@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scriptura - Bible</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary: #3a6b7e;
+        --secondary: #8a5a44;
+        --accent: #d39d5b;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --gray: #6c757d;
+        --success: #28a745;
+        --warning: #ffc107;
+        --danger: #dc3545;
+        --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        --transition: all 0.3s ease;
+      }
+
+      body {
+        background-color: #f5f7f9;
+        color: var(--dark);
+        line-height: 1.6;
+        padding-bottom: 70px; /* Space for bottom nav */
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 15px;
+      }
+
+      /* Header */
+      header {
+        background: linear-gradient(135deg, var(--primary), #2c5868);
+        color: white;
+        padding: 15px 0;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 8px;
+        color: var(--accent);
+      }
+
+      .user-actions {
+        display: flex;
+        align-items: center;
+      }
+
+      .user-actions button {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        margin-left: 15px;
+        font-size: 1rem;
+      }
+
+      /* Bible Navigation */
+      .bible-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        background: white;
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
+        border-radius: 12px;
+        padding: 15px;
+        margin-top: 20px;
+      }
+
+      .book-selector,
+      .chapter-selector {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-btn {
+        background: var(--light);
+        border: 1px solid #ddd;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition);
+      }
+
+      .nav-btn:hover {
+        background: #e9ecef;
+      }
+
+      .nav-title {
+        margin: 0 15px;
+        text-align: center;
+        min-width: 120px;
+      }
+
+      .nav-title h2 {
+        font-size: 1.2rem;
+        color: var(--primary);
+      }
+
+      .nav-title span {
+        font-size: 0.9rem;
+        color: var(--gray);
+      }
+
+      /* Bible Content */
+      .bible-content {
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 25px;
+        margin-bottom: 20px;
+        line-height: 1.8;
+      }
+
+      .bible-verse {
+        margin-bottom: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #f1f1f1;
+      }
+
+      .verse-number {
+        font-size: 0.8rem;
+        background: var(--light);
+        color: var(--primary);
+        width: 24px;
+        height: 24px;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+      }
+
+      .verse-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 10px;
+      }
+
+      .verse-actions button {
+        background: transparent;
+        border: none;
+        color: var(--gray);
+        cursor: pointer;
+        margin-left: 15px;
+        font-size: 0.9rem;
+        transition: var(--transition);
+      }
+
+      .verse-actions button:hover {
+        color: var(--primary);
+      }
+
+      /* Reading Options */
+      .reading-options {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
+      }
+
+      .option-group {
+        display: flex;
+        align-items: center;
+      }
+
+      .option-label {
+        margin-right: 10px;
+        font-size: 0.9rem;
+        color: var(--gray);
+      }
+
+      select {
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        background: white;
+        color: var(--dark);
+      }
+
+      .font-size-controls {
+        display: flex;
+        align-items: center;
+      }
+
+      .font-btn {
+        width: 36px;
+        height: 36px;
+        border: 1px solid #ddd;
+        background: white;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-left: 8px;
+        transition: var(--transition);
+      }
+
+      .font-btn:hover {
+        background: var(--light);
+      }
+
+      /* Bottom Navigation */
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        background: white;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        padding: 10px 0;
+      }
+
+      .nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        color: var(--gray);
+        font-size: 0.75rem;
+        transition: var(--transition);
+      }
+
+      .nav-item i {
+        font-size: 1.25rem;
+        margin-bottom: 4px;
+      }
+
+      .nav-item.active {
+        color: var(--primary);
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .bible-nav {
+          flex-direction: column;
+          gap: 15px;
+        }
+
+        .reading-options {
+          flex-direction: column;
+          gap: 15px;
+          align-items: flex-start;
+        }
+
+        .bible-content {
+          padding: 15px;
+        }
+
+        .verse-actions {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-bible"></i>
+            <span>Scriptura</span>
+          </div>
+          <div class="user-actions">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+            <button id="profile-btn"><i class="fas fa-user-circle"></i></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Bible Navigation -->
+      <div class="bible-nav">
+        <div class="book-selector">
+          <div class="nav-btn" id="prev-book">
+            <i class="fas fa-chevron-left"></i>
+          </div>
+          <div class="nav-title">
+            <h2 id="current-book">John</h2>
+            <span>Book</span>
+          </div>
+          <div class="nav-btn" id="next-book">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+
+        <div class="chapter-selector">
+          <div class="nav-btn" id="prev-chapter">
+            <i class="fas fa-chevron-left"></i>
+          </div>
+          <div class="nav-title">
+            <h2 id="current-chapter">3</h2>
+            <span>Chapter</span>
+          </div>
+          <div class="nav-btn" id="next-chapter">
+            <i class="fas fa-chevron-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reading Options -->
+      <div class="reading-options">
+        <div class="option-group">
+          <span class="option-label">Version:</span>
+          <select id="version-select">
+            <option value="niv" selected>NIV</option>
+            <option value="esv">ESV</option>
+            <option value="kjv">KJV</option>
+            <option value="nlt">NLT</option>
+          </select>
+        </div>
+
+        <div class="option-group">
+          <span class="option-label">Font Size:</span>
+          <div class="font-size-controls">
+            <div class="font-btn" id="decrease-font">
+              <i class="fas fa-minus"></i>
+            </div>
+            <div class="font-btn" id="increase-font">
+              <i class="fas fa-plus"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bible Content -->
+      <div class="bible-content" id="bible-text">
+        <div class="bible-verse">
+          <span class="verse-number">1</span>
+          <span class="verse-text"
+            >Now there was a Pharisee, a man named Nicodemus who was a member of
+            the Jewish ruling council.</span
+          >
+          <div class="verse-actions">
+            <button><i class="fas fa-bookmark"></i> Save</button>
+            <button><i class="fas fa-share-alt"></i> Share</button>
+            <button><i class="fas fa-highlighter"></i> Highlight</button>
+          </div>
+        </div>
+
+        <div class="bible-verse">
+          <span class="verse-number">2</span>
+          <span class="verse-text"
+            >He came to Jesus at night and said, "Rabbi, we know that you are a
+            teacher who has come from God. For no one could perform the signs
+            you are doing if God were not with him."</span
+          >
+          <div class="verse-actions">
+            <button><i class="fas fa-bookmark"></i> Save</button>
+            <button><i class="fas fa-share-alt"></i> Share</button>
+            <button><i class="fas fa-highlighter"></i> Highlight</button>
+          </div>
+        </div>
+
+        <div class="bible-verse">
+          <span class="verse-number">3</span>
+          <span class="verse-text"
+            >Jesus replied, "Very truly I tell you, no one can see the kingdom
+            of God unless they are born again."</span
+          >
+          <div class="verse-actions">
+            <button><i class="fas fa-bookmark"></i> Save</button>
+            <button><i class="fas fa-share-alt"></i> Share</button>
+            <button><i class="fas fa-highlighter"></i> Highlight</button>
+          </div>
+        </div>
+
+        <div class="bible-verse">
+          <span class="verse-number">4</span>
+          <span class="verse-text"
+            >"How can someone be born when they are old?" Nicodemus asked.
+            "Surely they cannot enter a second time into their mother's womb to
+            be born!"</span
+          >
+          <div class="verse-actions">
+            <button><i class="fas fa-bookmark"></i> Save</button>
+            <button><i class="fas fa-share-alt"></i> Share</button>
+            <button><i class="fas fa-highlighter"></i> Highlight</button>
+          </div>
+        </div>
+
+        <div class="bible-verse">
+          <span class="verse-number">5</span>
+          <span class="verse-text"
+            >Jesus answered, "Very truly I tell you, no one can enter the
+            kingdom of God unless they are born of water and the Spirit."</span
+          >
+          <div class="verse-actions">
+            <button><i class="fas fa-bookmark"></i> Save</button>
+            <button><i class="fas fa-share-alt"></i> Share</button>
+            <button><i class="fas fa-highlighter"></i> Highlight</button>
+          </div>
+        </div>
+
+        <div class="bible-verse">
+          <span class="verse-number">16</span>
+          <span class="verse-text"
+            >For God so loved the world that he gave his one and only Son, that
+            whoever believes in him shall not perish but have eternal
+            life.</span
+          >
+          <div class="verse-actions">
+            <button><i class="fas fa-bookmark"></i> Save</button>
+            <button><i class="fas fa-share-alt"></i> Share</button>
+            <button><i class="fas fa-highlighter"></i> Highlight</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation (for mobile) -->
+    <div class="bottom-nav">
+      <a href="#" class="nav-item">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item active">
+        <i class="fas fa-book"></i>
+        <span>Bible</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-pray"></i>
+        <span>Prayer</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-users"></i>
+        <span>Community</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+    </div>
+
+    <script>
+      // Bible data for demonstration
+      const bibleData = {
+        books: [
+          'Genesis',
+          'Exodus',
+          'Leviticus',
+          'Numbers',
+          'Deuteronomy',
+          'Joshua',
+          'Judges',
+          'Ruth',
+          '1 Samuel',
+          '2 Samuel',
+          '1 Kings',
+          '2 Kings',
+          '1 Chronicles',
+          '2 Chronicles',
+          'Ezra',
+          'Nehemiah',
+          'Esther',
+          'Job',
+          'Psalms',
+          'Proverbs',
+          'Ecclesiastes',
+          'Song of Solomon',
+          'Isaiah',
+          'Jeremiah',
+          'Lamentations',
+          'Ezekiel',
+          'Daniel',
+          'Hosea',
+          'Joel',
+          'Amos',
+          'Obadiah',
+          'Jonah',
+          'Micah',
+          'Nahum',
+          'Habakkuk',
+          'Zephaniah',
+          'Haggai',
+          'Zechariah',
+          'Malachi',
+          'Matthew',
+          'Mark',
+          'Luke',
+          'John',
+          'Acts',
+          'Romans',
+          '1 Corinthians',
+          '2 Corinthians',
+          'Galatians',
+          'Ephesians',
+          'Philippians',
+          'Colossians',
+          '1 Thessalonians',
+          '2 Thessalonians',
+          '1 Timothy',
+          '2 Timothy',
+          'Titus',
+          'Philemon',
+          'Hebrews',
+          'James',
+          '1 Peter',
+          '2 Peter',
+          '1 John',
+          '2 John',
+          '3 John',
+          'Jude',
+          'Revelation',
+        ],
+        currentBookIndex: 42, // John
+        currentChapter: 3,
+      };
+
+      // DOM Elements
+      const currentBookElement = document.getElementById('current-book');
+      const currentChapterElement = document.getElementById('current-chapter');
+      const prevBookBtn = document.getElementById('prev-book');
+      const nextBookBtn = document.getElementById('next-book');
+      const prevChapterBtn = document.getElementById('prev-chapter');
+      const nextChapterBtn = document.getElementById('next-chapter');
+      const versionSelect = document.getElementById('version-select');
+      const decreaseFontBtn = document.getElementById('decrease-font');
+      const increaseFontBtn = document.getElementById('increase-font');
+      const bibleTextElement = document.getElementById('bible-text');
+
+      // Initialize
+      updateBibleNavigation();
+
+      // Event Listeners
+      prevBookBtn.addEventListener('click', () => {
+        if (bibleData.currentBookIndex > 0) {
+          bibleData.currentBookIndex--;
+          updateBibleNavigation();
+        }
+      });
+
+      nextBookBtn.addEventListener('click', () => {
+        if (bibleData.currentBookIndex < bibleData.books.length - 1) {
+          bibleData.currentBookIndex++;
+          updateBibleNavigation();
+        }
+      });
+
+      prevChapterBtn.addEventListener('click', () => {
+        if (bibleData.currentChapter > 1) {
+          bibleData.currentChapter--;
+          updateBibleNavigation();
+        }
+      });
+
+      nextChapterBtn.addEventListener('click', () => {
+        // In a real app, we would check the actual number of chapters in the book
+        bibleData.currentChapter++;
+        updateBibleNavigation();
+      });
+
+      versionSelect.addEventListener('change', () => {
+        // In a real app, this would fetch the selected Bible version
+        alert(
+          `Switched to ${
+            versionSelect.options[versionSelect.selectedIndex].text
+          } version`
+        );
+      });
+
+      decreaseFontBtn.addEventListener('click', () => {
+        const currentSize = parseInt(
+          getComputedStyle(bibleTextElement).fontSize
+        );
+        if (currentSize > 14) {
+          bibleTextElement.style.fontSize = currentSize - 1 + 'px';
+        }
+      });
+
+      increaseFontBtn.addEventListener('click', () => {
+        const currentSize = parseInt(
+          getComputedStyle(bibleTextElement).fontSize
+        );
+        if (currentSize < 24) {
+          bibleTextElement.style.fontSize = currentSize + 1 + 'px';
+        }
+      });
+
+      // Add event listeners to verse action buttons
+      document.querySelectorAll('.verse-actions button').forEach((button) => {
+        button.addEventListener('click', function () {
+          const verseNumber =
+            this.closest('.bible-verse').querySelector(
+              '.verse-number'
+            ).textContent;
+          const bookName = bibleData.books[bibleData.currentBookIndex];
+
+          if (this.querySelector('.fa-bookmark')) {
+            alert(
+              `Bookmarked ${bookName} ${bibleData.currentChapter}:${verseNumber}`
+            );
+          } else if (this.querySelector('.fa-share-alt')) {
+            alert(
+              `Sharing ${bookName} ${bibleData.currentChapter}:${verseNumber}`
+            );
+          } else if (this.querySelector('.fa-highlighter')) {
+            this.style.color = this.style.color === 'gold' ? '' : 'gold';
+          }
+        });
+      });
+
+      // Function to update Bible navigation
+      function updateBibleNavigation() {
+        currentBookElement.textContent =
+          bibleData.books[bibleData.currentBookIndex];
+        currentChapterElement.textContent = bibleData.currentChapter;
+
+        // Update document title
+        document.title = `${bibleData.books[bibleData.currentBookIndex]} ${
+          bibleData.currentChapter
+        } - Scriptura`;
+      }
+
+      // Simulate search functionality
+      document.getElementById('search-btn').addEventListener('click', () => {
+        alert('Search functionality would open here');
+      });
+
+      // Simulate profile functionality
+      document.getElementById('profile-btn').addEventListener('click', () => {
+        alert('Profile screen would open here');
+      });
+    </script>
+  </body>
+</html>

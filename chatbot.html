@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Chatbot Agent</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+        --primary: #3a6b7e;
+        --primary-light: #5a8b9e;
+        --primary-dark: #2c5868;
+        --secondary: #8a5a44;
+        --accent: #d39d5b;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --gray: #6c757d;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7f9 0%, #e8f4f8 100%);
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* Demo Content */
+      .demo-content {
+        text-align: center;
+        padding: 40px;
+        max-width: 600px;
+      }
+
+      .demo-content h1 {
+        color: var(--primary);
+        font-size: 2.5rem;
+        margin-bottom: 20px;
+      }
+
+      .demo-content p {
+        color: var(--gray);
+        font-size: 1.1rem;
+        line-height: 1.8;
+      }
+
+      .demo-content .icon-demo {
+        font-size: 4rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+        opacity: 0.3;
+      }
+
+      /* ===== CHATBOT STYLES ===== */
+      .chatbot-container {
+        position: fixed;
+        z-index: 1000;
+      }
+
+      /* Floating Toggle Button */
+      .chatbot-toggle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        border: none;
+        cursor: grab;
+        box-shadow: var(--shadow);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        transition: var(--transition);
+        position: relative;
+        user-select: none;
+        touch-action: none;
+      }
+
+      .chatbot-toggle:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 24px rgba(58, 107, 126, 0.4);
+      }
+
+      .chatbot-toggle:active {
+        cursor: grabbing;
+        transform: scale(0.95);
+      }
+
+      .chatbot-toggle .badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: var(--danger);
+        color: white;
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        animation: pulse-badge 2s infinite;
+      }
+
+      @keyframes pulse-badge {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      /* Chat Window */
+      .chat-window {
+        position: absolute;
+        bottom: 80px;
+        width: 380px;
+        max-width: 90vw;
+        height: 500px;
+        max-height: 70vh;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.18);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        animation: slideUp 0.3s ease;
+      }
+
+      .chat-window.open {
+        display: flex;
+      }
+
+      @keyframes slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px) scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      /* Chat Header */
+      .chat-header {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-shrink: 0;
+      }
+
+      .chat-header-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .chat-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+
+      .chat-header-info h3 {
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .chat-header-info p {
+        font-size: 0.75rem;
+        opacity: 0.8;
+      }
+
+      .chat-header-actions {
+        display: flex;
+        gap: 8px;
+      }
+
+      .chat-header-actions button {
+        background: transparent;
+        border: none;
+        color: white;
+        cursor: pointer;
+        padding: 5px 8px;
+        border-radius: 6px;
+        transition: var(--transition);
+        font-size: 0.9rem;
+      }
+
+      .chat-header-actions button:hover {
+        background: rgba(255, 255, 255, 0.15);
+      }
+
+      /* Chat Messages */
+      .chat-messages {
+        flex: 1;
+        padding: 15px 20px;
+        overflow-y: auto;
+        background: #f8fafb;
+      }
+
+      .chat-messages::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .chat-messages::-webkit-scrollbar-track {
+        background: transparent;
+      }
+
+      .chat-messages::-webkit-scrollbar-thumb {
+        background: var(--gray);
+        border-radius: 2px;
+      }
+
+      .message {
+        margin-bottom: 12px;
+        max-width: 85%;
+        animation: messageIn 0.3s ease;
+      }
+
+      @keyframes messageIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message.bot {
+        align-self: flex-start;
+      }
+
+      .message.user {
+        align-self: flex-end;
+        margin-left: auto;
+      }
+
+      .message-content {
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        word-wrap: break-word;
+      }
+
+      .message.bot .message-content {
+        background: white;
+        color: var(--dark);
+        border-bottom-left-radius: 4px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+      }
+
+      .message.user .message-content {
+        background: var(--primary);
+        color: white;
+        border-bottom-right-radius: 4px;
+      }
+
+      .message-time {
+        font-size: 0.7rem;
+        color: var(--gray);
+        margin-top: 4px;
+        padding: 0 4px;
+      }
+
+      .message.user .message-time {
+        text-align: right;
+      }
+
+      /* Typing Indicator */
+      .typing-indicator {
+        display: none;
+        padding: 10px 14px;
+        background: white;
+        border-radius: 12px;
+        border-bottom-left-radius: 4px;
+        margin-bottom: 12px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        align-self: flex-start;
+      }
+
+      .typing-indicator.active {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--gray);
+        border-radius: 50%;
+        animation: typingBounce 1.4s infinite;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typingBounce {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+        }
+        30% {
+          transform: translateY(-6px);
+        }
+      }
+
+      /* Chat Input */
+      .chat-input {
+        padding: 12px 16px;
+        border-top: 1px solid #eee;
+        display: flex;
+        gap: 10px;
+        background: white;
+        flex-shrink: 0;
+      }
+
+      .chat-input input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 1px solid #ddd;
+        border-radius: 24px;
+        font-size: 0.9rem;
+        outline: none;
+        transition: var(--transition);
+      }
+
+      .chat-input input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(58, 107, 126, 0.15);
+      }
+
+      .chat-input button {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: none;
+        background: var(--primary);
+        color: white;
+        cursor: pointer;
+        transition: var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .chat-input button:hover {
+        background: var(--primary-dark);
+        transform: scale(1.05);
+      }
+
+      .chat-input button:active {
+        transform: scale(0.95);
+      }
+
+      /* Quick Replies */
+      .quick-replies {
+        display: flex;
+        gap: 8px;
+        padding: 0 20px 12px 20px;
+        flex-wrap: wrap;
+        background: #f8fafb;
+        border-top: 1px solid #f0f0f0;
+        flex-shrink: 0;
+      }
+
+      .quick-reply-btn {
+        padding: 6px 14px;
+        border: 1px solid var(--primary);
+        border-radius: 20px;
+        background: transparent;
+        color: var(--primary);
+        cursor: pointer;
+        font-size: 0.8rem;
+        transition: var(--transition);
+      }
+
+      .quick-reply-btn:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      /* Position Controls */
+      .position-controls {
+        position: fixed;
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 10px;
+        background: white;
+        padding: 10px 15px;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        z-index: 999;
+      }
+
+      .position-controls button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: var(--light);
+        color: var(--gray);
+        transition: var(--transition);
+        font-size: 0.85rem;
+      }
+
+      .position-controls button:hover {
+        background: var(--primary);
+        color: white;
+      }
+
+      .position-controls button.active {
+        background: var(--primary);
+        color: white;
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        .chat-window {
+          width: 100vw;
+          max-width: 100vw;
+          max-height: 80vh;
+          bottom: 80px;
+          right: 0 !important;
+          left: 0 !important;
+          border-radius: 16px 16px 0 0;
+        }
+
+        .chatbot-toggle {
+          width: 54px;
+          height: 54px;
+          font-size: 1.5rem;
+        }
+
+        .position-controls {
+          bottom: 80px;
+          padding: 8px 12px;
+          gap: 6px;
+        }
+
+        .position-controls button {
+          padding: 6px 12px;
+          font-size: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Demo Content -->
+    <div class="demo-content">
+      <div class="icon-demo">
+        <i class="fas fa-robot"></i>
+      </div>
+      <h1>AI Chatbot Assistant</h1>
+      <p>
+        Click the floating icon to chat with our AI assistant. You can drag the
+        icon to any position on the screen.
+      </p>
+      <p style="margin-top: 10px; font-size: 0.9rem; color: #aaa">
+        <i class="fas fa-arrows-alt"></i> Drag the icon to reposition
+      </p>
+    </div>
+
+    <!-- Position Controls -->
+    <div class="position-controls">
+      <button class="active" data-position="right">
+        <i class="fas fa-arrow-right"></i> Right
+      </button>
+      <button data-position="left">
+        <i class="fas fa-arrow-left"></i> Left
+      </button>
+    </div>
+
+    <!-- ===== CHATBOT ===== -->
+    <div class="chatbot-container" id="chatbot">
+      <!-- Toggle Button -->
+      <button class="chatbot-toggle" id="chatbotToggle">
+        <i class="fas fa-comment-dots"></i>
+        <span class="badge">3</span>
+      </button>
+
+      <!-- Chat Window -->
+      <div class="chat-window" id="chatWindow">
+        <!-- Header -->
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <div class="chat-avatar">
+              <i class="fas fa-robot"></i>
+            </div>
+            <div class="chat-header-info">
+              <h3>Bible Assistant</h3>
+              <p>Online • AI Powered</p>
+            </div>
+          </div>
+          <div class="chat-header-actions">
+            <button id="minimizeChat" title="Minimize">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button id="closeChat" title="Close">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Messages -->
+        <div class="chat-messages" id="chatMessages">
+          <div class="message bot">
+            <div class="message-content">
+              👋 Hello! I'm your Bible assistant. How can I help you today?
+            </div>
+            <div class="message-time">Just now</div>
+          </div>
+
+          <div class="message bot">
+            <div class="message-content">
+              I can help you with:<br />
+              • Finding Bible verses<br />
+              • Daily devotions<br />
+              • Prayer guidance<br />
+              • Understanding scripture
+            </div>
+            <div class="message-time">Just now</div>
+          </div>
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="typing-indicator" id="typingIndicator">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+
+        <!-- Quick Replies -->
+        <div class="quick-replies" id="quickReplies">
+          <button class="quick-reply-btn" data-msg="Show me a verse about love">
+            ❤️ Love
+          </button>
+          <button
+            class="quick-reply-btn"
+            data-msg="Show me a verse about peace"
+          >
+            🕊️ Peace
+          </button>
+          <button
+            class="quick-reply-btn"
+            data-msg="Show me a verse about strength"
+          >
+            💪 Strength
+          </button>
+          <button class="quick-reply-btn" data-msg="Show me today's devotion">
+            📖 Devotion
+          </button>
+        </div>
+
+        <!-- Input -->
+        <div class="chat-input">
+          <input
+            type="text"
+            id="chatInput"
+            placeholder="Type your message..."
+            maxlength="500"
+          />
+          <button id="sendMessage">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ===== CHATBOT LOGIC =====
+
+      // State
+      let isOpen = false;
+      let isDragging = false;
+      let dragOffsetX = 0;
+      let dragOffsetY = 0;
+      let startX = 0;
+      let startY = 0;
+      let currentPosition = 'right';
+
+      // DOM Elements
+      const chatbotContainer = document.getElementById('chatbot');
+      const toggleBtn = document.getElementById('chatbotToggle');
+      const chatWindow = document.getElementById('chatWindow');
+      const chatMessages = document.getElementById('chatMessages');
+      const chatInput = document.getElementById('chatInput');
+      const sendBtn = document.getElementById('sendMessage');
+      const closeBtn = document.getElementById('closeChat');
+      const minimizeBtn = document.getElementById('minimizeChat');
+      const typingIndicator = document.getElementById('typingIndicator');
+      const quickReplyBtns = document.querySelectorAll('.quick-reply-btn');
+      const positionBtns = document.querySelectorAll(
+        '.position-controls button'
+      );
+
+      // ===== RESPONSES =====
+      const bibleResponses = [
+        {
+          keywords: ['love', 'loved', 'loving'],
+          response:
+            "Here's a beautiful verse about love:\n\n'Love is patient, love is kind. It does not envy, it does not boast, it is not proud. It does not dishonor others, it is not self-seeking, it is not easily angered, it keeps no record of wrongs.' — 1 Corinthians 13:4-5",
+        },
+        {
+          keywords: ['peace', 'calm', 'anxiety', 'worried', 'stress'],
+          response:
+            "A verse for peace:\n\n'Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid.' — John 14:27",
+        },
+        {
+          keywords: ['strength', 'strong', 'powerful', 'courage'],
+          response:
+            "A verse for strength:\n\n'I can do all this through him who gives me strength.' — Philippians 4:13",
+        },
+        {
+          keywords: ['faith', 'believe', 'trust'],
+          response:
+            "A verse about faith:\n\n'Now faith is confidence in what we hope for and assurance about what we do not see.' — Hebrews 11:1",
+        },
+        {
+          keywords: ['hope', 'future', 'plan'],
+          response:
+            "A verse about hope:\n\n'For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.' — Jeremiah 29:11",
+        },
+        {
+          keywords: ['devotion', 'daily', 'today'],
+          response:
+            "Today's Devotion:\n\n'Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.' — Proverbs 3:5-6\n\nTake time today to surrender your plans to God and trust His guidance.",
+        },
+        {
+          keywords: ['pray', 'prayer', 'praying'],
+          response:
+            "A prayer for today:\n\nHeavenly Father, thank you for this day. Guide my thoughts, words, and actions. Help me to be a light to others and to show your love in everything I do. In Jesus' name, Amen.",
+        },
+        {
+          keywords: ['grace', 'forgive', 'forgiven', 'mercy'],
+          response:
+            "A verse about grace:\n\n'For it is by grace you have been saved, through faith—and this is not from yourselves, it is the gift of God—not by works, so that no one can boast.' — Ephesians 2:8-9",
+        },
+        {
+          keywords: ['help', 'guidance', 'direction'],
+          response:
+            "A verse for guidance:\n\n'Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.' — Proverbs 3:5-6",
+        },
+        {
+          keywords: ['thank', 'gratitude', 'blessed', 'bless'],
+          response:
+            "A verse of thanksgiving:\n\n'Give thanks to the Lord, for he is good; his love endures forever.' — Psalm 118:1",
+        },
+      ];
+
+      const fallbackResponses = [
+        "That's a great question! Let me find a scripture for you...",
+        "Thank you for asking. Here's something from God's word that might help:",
+        'Let me share a verse with you that speaks to that:',
+        "I appreciate your question. Here's what Scripture says:",
+        "That's a thoughtful question. Let me share God's wisdom:",
+      ];
+
+      // ===== CHAT FUNCTIONS =====
+
+      function getBotResponse(message) {
+        const lowerMsg = message.toLowerCase();
+
+        // Check for keyword matches
+        for (const item of bibleResponses) {
+          for (const keyword of item.keywords) {
+            if (lowerMsg.includes(keyword)) {
+              return item.response;
+            }
+          }
+        }
+
+        // Check for common greetings
+        if (
+          lowerMsg.match(
+            /^(hi|hello|hey|good morning|good afternoon|good evening|greetings)/
+          )
+        ) {
+          return "Hello! How can I help you with God's word today? 🙏";
+        }
+
+        // Random fallback
+        const random = Math.floor(Math.random() * fallbackResponses.length);
+        const verses = [
+          "'The Lord is my shepherd; I shall not want.' — Psalm 23:1",
+          "'Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.' — Joshua 1:9",
+          "'The Lord bless you and keep you; the Lord make his face shine on you and be gracious to you.' — Numbers 6:24-25",
+          "'Rejoice always, pray continually, give thanks in all circumstances; for this is God's will for you in Christ Jesus.' — 1 Thessalonians 5:16-18",
+          "'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.' — Philippians 4:6",
+        ];
+        const randomVerse = verses[Math.floor(Math.random() * verses.length)];
+        return `${fallbackResponses[random]}\n\n${randomVerse}`;
+      }
+
+      function addMessage(text, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user' : 'bot'}`;
+
+        const content = document.createElement('div');
+        content.className = 'message-content';
+        content.textContent = text;
+
+        const time = document.createElement('div');
+        time.className = 'message-time';
+        time.textContent = new Date().toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+
+        messageDiv.appendChild(content);
+        messageDiv.appendChild(time);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function showTyping() {
+        typingIndicator.classList.add('active');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function hideTyping() {
+        typingIndicator.classList.remove('active');
+      }
+
+      function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // Add user message
+        addMessage(message, true);
+        chatInput.value = '';
+
+        // Show typing indicator
+        showTyping();
+
+        // Simulate bot response
+        setTimeout(() => {
+          hideTyping();
+          const response = getBotResponse(message);
+          addMessage(response, false);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+        }, 1000 + Math.random() * 1000);
+      }
+
+      // ===== CHAT WINDOW CONTROLS =====
+
+      function openChat() {
+        isOpen = true;
+        chatWindow.classList.add('open');
+        toggleBtn.querySelector('i').className = 'fas fa-times';
+        // Remove badge when opened
+        const badge = toggleBtn.querySelector('.badge');
+        if (badge) badge.style.display = 'none';
+      }
+
+      function closeChat() {
+        isOpen = false;
+        chatWindow.classList.remove('open');
+        toggleBtn.querySelector('i').className = 'fas fa-comment-dots';
+      }
+
+      function toggleChat() {
+        if (isOpen) {
+          closeChat();
+        } else {
+          openChat();
+        }
+      }
+
+      // ===== DRAG FUNCTIONALITY =====
+
+      function startDrag(e) {
+        e.preventDefault();
+        isDragging = true;
+
+        const touch = e.touches ? e.touches[0] : e;
+        const rect = chatbotContainer.getBoundingClientRect();
+
+        dragOffsetX = touch.clientX - rect.left;
+        dragOffsetY = touch.clientY - rect.top;
+        startX = rect.left;
+        startY = rect.top;
+
+        toggleBtn.style.cursor = 'grabbing';
+        toggleBtn.classList.add('dragging');
+      }
+
+      function onDrag(e) {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        const touch = e.touches ? e.touches[0] : e;
+        let x = touch.clientX - dragOffsetX;
+        let y = touch.clientY - dragOffsetY;
+
+        // Get viewport boundaries
+        const iconSize = 60;
+        const padding = 10;
+        const maxX = window.innerWidth - iconSize - padding;
+        const maxY = window.innerHeight - iconSize - padding;
+
+        // Clamp within viewport
+        x = Math.max(padding, Math.min(x, maxX));
+        y = Math.max(padding, Math.min(y, maxY));
+
+        // Remove any existing positioning styles
+        chatbotContainer.style.left = x + 'px';
+        chatbotContainer.style.top = y + 'px';
+        chatbotContainer.style.right = 'auto';
+        chatbotContainer.style.bottom = 'auto';
+        chatbotContainer.style.transform = 'none';
+
+        // Update position based on icon's location
+        const center = window.innerWidth / 2;
+        const newPosition = x + iconSize / 2 < center ? 'left' : 'right';
+        updatePositionIndicator(newPosition);
+      }
+
+      function endDrag(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        toggleBtn.style.cursor = 'grab';
+        toggleBtn.classList.remove('dragging');
+      }
+
+      // ===== POSITION MANAGEMENT =====
+
+      function updatePositionIndicator(position) {
+        currentPosition = position;
+        positionBtns.forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.position === position);
+        });
+      }
+
+      function setPosition(position) {
+        currentPosition = position;
+        const iconSize = 60;
+        const padding = 10;
+
+        // Reset container positioning
+        chatbotContainer.style.top = 'auto';
+        chatbotContainer.style.bottom = '30px';
+        chatbotContainer.style.left = 'auto';
+        chatbotContainer.style.right = 'auto';
+        chatbotContainer.style.transform = 'none';
+
+        if (position === 'right') {
+          chatbotContainer.style.right = padding + 'px';
+          chatbotContainer.style.left = 'auto';
+          chatWindow.style.right = '0';
+          chatWindow.style.left = 'auto';
+          chatWindow.style.transformOrigin = 'bottom right';
+        } else {
+          chatbotContainer.style.left = padding + 'px';
+          chatbotContainer.style.right = 'auto';
+          chatWindow.style.left = '0';
+          chatWindow.style.right = 'auto';
+          chatWindow.style.transformOrigin = 'bottom left';
+        }
+
+        updatePositionIndicator(position);
+
+        // Store preference
+        try {
+          localStorage.setItem('chatbotPosition', position);
+        } catch (e) {}
+      }
+
+      // ===== EVENT LISTENERS =====
+
+      // Toggle
+      toggleBtn.addEventListener('click', function (e) {
+        if (!isDragging) {
+          toggleChat();
+        }
+      });
+
+      // Drag events (mouse)
+      toggleBtn.addEventListener('mousedown', startDrag);
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup', endDrag);
+
+      // Drag events (touch)
+      toggleBtn.addEventListener('touchstart', startDrag, { passive: false });
+      document.addEventListener('touchmove', onDrag, { passive: false });
+      document.addEventListener('touchend', endDrag);
+
+      // Send message
+      sendBtn.addEventListener('click', sendMessage);
+      chatInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // Close and minimize
+      closeBtn.addEventListener('click', closeChat);
+      minimizeBtn.addEventListener('click', function () {
+        closeChat();
+      });
+
+      // Quick replies
+      quickReplyBtns.forEach((btn) => {
+        btn.addEventListener('click', function () {
+          const msg = this.dataset.msg;
+          chatInput.value = msg;
+          sendMessage();
+        });
+      });
+
+      // Position controls
+      positionBtns.forEach((btn) => {
+        btn.addEventListener('click', function () {
+          setPosition(this.dataset.position);
+        });
+      });
+
+      // ===== INITIALIZATION =====
+
+      // Load saved position
+      try {
+        const savedPosition = localStorage.getItem('chatbotPosition');
+        if (savedPosition) {
+          setPosition(savedPosition);
+        } else {
+          setPosition('right');
+        }
+      } catch (e) {
+        setPosition('right');
+      }
+
+      // Handle window resize
+      let resizeTimeout;
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          // Re-clamp position if using custom positioning
+          if (!chatbotContainer.style.right && !chatbotContainer.style.left) {
+            // If custom positioned, ensure it stays in bounds
+            const rect = chatbotContainer.getBoundingClientRect();
+            const iconSize = 60;
+            const padding = 10;
+
+            if (rect.left < padding) {
+              chatbotContainer.style.left = padding + 'px';
+            }
+            if (rect.right > window.innerWidth - padding) {
+              chatbotContainer.style.left =
+                window.innerWidth - iconSize - padding + 'px';
+            }
+            if (rect.top < padding) {
+              chatbotContainer.style.top = padding + 'px';
+            }
+            if (rect.bottom > window.innerHeight - padding) {
+              chatbotContainer.style.top =
+                window.innerHeight - iconSize - padding + 'px';
+            }
+          }
+        }, 100);
+      });
+
+      console.log('🤖 AI Chatbot initialized!');
+      console.log('💡 Drag the icon to reposition it.');
+      console.log('📌 Use the position controls to snap to left or right.');
+    </script>
+  </body>
+</html>

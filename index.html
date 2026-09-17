@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scriptura - Bible App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      :root {
+          --primary: #3a6b7e;
+          --secondary: #8a5a44;
+          --accent: #d39d5b;
+          --light: #f8f9fa;
+          --dark: #343a40;
+          --gray: #6c757d;
+          --success: #28a745;
+          --warning: #ffc107;
+          --danger: #dc3545;
+          --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+          --transition: all 0.3s ease;
+      }
+
+      body {
+          background-color: #f5f7f9;
+          color: var(--dark);
+          line-height: 1.6;
+          padding-bottom: 70px; /* Space for bottom nav */
+      }
+
+      .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 15px;
+      }
+
+      /* Header */
+      header {
+          background: linear-gradient(135deg, var(--primary), #2c5868);
+          color: white;
+          padding: 15px 0;
+          box-shadow: var(--shadow);
+          position: sticky;
+          top: 0;
+          z-index: 100;
+      }
+
+      .header-content {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+
+      .logo {
+          font-size: 1.5rem;
+          font-weight: 700;
+          display: flex;
+          align-items: center;
+      }
+
+      .logo i {
+          margin-right: 8px;
+          color: var(--accent);
+      }
+
+      .user-actions {
+          display: flex;
+          align-items: center;
+      }
+
+      .user-actions button {
+          background: transparent;
+          border: none;
+          color: white;
+          cursor: pointer;
+          margin-left: 15px;
+          font-size: 1rem;
+      }
+
+      /* Bottom Navigation */
+      .bottom-nav {
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          display: flex;
+          justify-content: space-around;
+          background: white;
+          box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+          z-index: 100;
+          padding: 10px 0;
+      }
+
+      .nav-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-decoration: none;
+          color: var(--gray);
+          font-size: 0.75rem;
+          transition: var(--transition);
+      }
+
+      .nav-item i {
+          font-size: 1.25rem;
+          margin-bottom: 4px;
+      }
+
+      .nav-item.active {
+          color: var(--primary);
+      }
+
+      /* Main Content */
+      .main-content {
+          padding: 20px 0;
+      }
+
+      .card {
+          background: white;
+          border-radius: 12px;
+          box-shadow: var(--shadow);
+          padding: 20px;
+          margin-bottom: 20px;
+          transition: var(--transition);
+      }
+
+      .card:hover {
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      }
+
+      .card-title {
+          font-size: 1.2rem;
+          margin-bottom: 15px;
+          color: var(--primary);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+      }
+
+      /* Daily Verse */
+      .daily-verse {
+          background: linear-gradient(to right, var(--primary), #4a7b8e);
+          color: white;
+          position: relative;
+          overflow: hidden;
+      }
+
+      .daily-verse::before {
+          content: """;
+          position: absolute;
+          top: -20px;
+          left: -10px;
+          font-size: 120px;
+          opacity: 0.1;
+          color: white;
+      }
+
+      .verse-text {
+          font-size: 1.1rem;
+          font-style: italic;
+          margin-bottom: 10px;
+          position: relative;
+          z-index: 1;
+      }
+
+      .verse-ref {
+          text-align: right;
+          opacity: 0.9;
+          font-size: 0.9rem;
+          position: relative;
+          z-index: 1;
+      }
+
+      /* Daily Devotion */
+      .devotion-title {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
+      }
+
+      .devotion-title i {
+          color: var(--accent);
+          margin-right: 10px;
+      }
+
+      .devotion-content {
+          font-size: 0.95rem;
+      }
+
+      .read-more {
+          color: var(--primary);
+          text-decoration: none;
+          font-weight: 500;
+          display: inline-block;
+          margin-top: 10px;
+          font-size: 0.9rem;
+      }
+
+      /* Books Section */
+      .books-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+          gap: 15px;
+          margin-top: 15px;
+      }
+
+      .book-item {
+          background: #f1f5f7;
+          border-radius: 8px;
+          padding: 15px 10px;
+          text-align: center;
+          cursor: pointer;
+          transition: var(--transition);
+      }
+
+      .book-item:hover {
+          background: #e8edf0;
+          transform: translateY(-3px);
+      }
+
+      .book-item i {
+          font-size: 1.5rem;
+          color: var(--secondary);
+          margin-bottom: 8px;
+      }
+
+      /* Forms */
+      .form-group {
+          margin-bottom: 20px;
+      }
+
+      .form-group label {
+          display: block;
+          margin-bottom: 8px;
+          font-weight: 500;
+          font-size: 0.9rem;
+      }
+
+      .form-control {
+          width: 100%;
+          padding: 12px 15px;
+          border: 1px solid #ddd;
+          border-radius: 8px;
+          font-size: 1rem;
+          transition: var(--transition);
+      }
+
+      .form-control:focus {
+          outline: none;
+          border-color: var(--primary);
+          box-shadow: 0 0 0 3px rgba(58, 107, 126, 0.2);
+      }
+
+      .btn {
+          padding: 12px 20px;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-weight: 600;
+          transition: var(--transition);
+          font-size: 1rem;
+      }
+
+      .btn-primary {
+          background: var(--primary);
+          color: white;
+      }
+
+      .btn-primary:hover {
+          background: #2c5868;
+      }
+
+      .btn-block {
+          width: 100%;
+      }
+
+      /* Forum Preview */
+      .forum-item {
+          display: flex;
+          margin-bottom: 15px;
+          padding-bottom: 15px;
+          border-bottom: 1px solid #eee;
+      }
+
+      .forum-item:last-child {
+          margin-bottom: 0;
+          padding-bottom: 0;
+          border-bottom: none;
+      }
+
+      .forum-icon {
+          background: #f1f5f7;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 15px;
+          color: var(--primary);
+      }
+
+      .forum-content {
+          flex: 1;
+      }
+
+      .forum-title {
+          font-weight: 600;
+          margin-bottom: 5px;
+      }
+
+      .forum-meta {
+          font-size: 0.8rem;
+          color: var(--gray);
+      }
+
+      /* Responsive */
+      @media (min-width: 768px) {
+          .bottom-nav {
+              display: none;
+          }
+
+          body {
+              padding-bottom: 0;
+          }
+
+          .desktop-nav {
+              display: flex;
+          }
+
+          .books-grid {
+              grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          }
+      }
+
+      @media (max-width: 767px) {
+          .desktop-nav {
+              display: none;
+          }
+
+          .card-title {
+              font-size: 1.1rem;
+          }
+
+          .verse-text {
+              font-size: 1rem;
+          }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <div class="container">
+        <div class="header-content">
+          <div class="logo">
+            <i class="fas fa-bible"></i>
+            <span>Scriptura</span>
+          </div>
+          <div class="user-actions">
+            <button id="search-btn"><i class="fas fa-search"></i></button>
+            <button id="profile-btn"><i class="fas fa-user-circle"></i></button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+      <!-- Daily Verse Card -->
+      <div class="card daily-verse">
+        <div class="verse-text">
+          "For God so loved the world that he gave his one and only Son, that
+          whoever believes in him shall not perish but have eternal life."
+        </div>
+        <div class="verse-ref">John 3:16 (NIV)</div>
+      </div>
+
+      <!-- Daily Prayer Card -->
+      <div class="card">
+        <div class="card-title">
+          <span>Daily Prayer</span>
+          <i class="fas fa-pray"></i>
+        </div>
+        <p>
+          Heavenly Father, thank you for this new day. Guide my thoughts, words,
+          and actions to honor You. Help me to show love and compassion to
+          others as You have shown to me.
+        </p>
+        <a href="#" class="read-more"
+          >More Prayers <i class="fas fa-arrow-right"></i
+        ></a>
+      </div>
+
+      <!-- Daily Devotion Card -->
+      <div class="card">
+        <div class="devotion-title">
+          <i class="fas fa-devotional"></i>
+          <h3>Today's Devotion: Trust in the Lord</h3>
+        </div>
+        <div class="devotion-content">
+          <p>
+            Trust in the LORD with all your heart and lean not on your own
+            understanding; in all your ways submit to him, and he will make your
+            paths straight. - Proverbs 3:5-6
+          </p>
+          <p>
+            In times of uncertainty, we are called to rely not on our own
+            limited perspective but on God's infinite wisdom...
+          </p>
+        </div>
+        <a href="#" class="read-more"
+          >Read Full Devotion <i class="fas fa-arrow-right"></i
+        ></a>
+      </div>
+
+      <!-- Books Card -->
+      <div class="card">
+        <div class="card-title">
+          <span>Books of the Bible</span>
+          <a href="#" style="color: var(--primary); font-size: 0.9rem"
+            >View All</a
+          >
+        </div>
+        <div class="books-grid">
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Genesis</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Exodus</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Matthew</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>John</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Romans</div>
+          </div>
+          <div class="book-item">
+            <i class="fas fa-book"></i>
+            <div>Revelation</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Forums Preview -->
+      <div class="card">
+        <div class="card-title">
+          <span>Community Discussions</span>
+          <a href="#" style="color: var(--primary); font-size: 0.9rem"
+            >View All</a
+          >
+        </div>
+        <div class="forum-item">
+          <div class="forum-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="forum-content">
+            <div class="forum-title">
+              How do I strengthen my faith during difficult times?
+            </div>
+            <div class="forum-meta">24 comments • Started 2 hours ago</div>
+          </div>
+        </div>
+        <div class="forum-item">
+          <div class="forum-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="forum-content">
+            <div class="forum-title">Favorite Bible verses and why</div>
+            <div class="forum-meta">47 comments • Started 1 day ago</div>
+          </div>
+        </div>
+        <div class="forum-item">
+          <div class="forum-icon">
+            <i class="fas fa-comments"></i>
+          </div>
+          <div class="forum-content">
+            <div class="forum-title">Prayer requests for September</div>
+            <div class="forum-meta">33 comments • Started 2 days ago</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation (for mobile) -->
+    <div class="bottom-nav">
+      <a href="#" class="nav-item active">
+        <i class="fas fa-home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-book"></i>
+        <span>Bible</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-pray"></i>
+        <span>Prayer</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-users"></i>
+        <span>Community</span>
+      </a>
+      <a href="#" class="nav-item">
+        <i class="fas fa-user"></i>
+        <span>Profile</span>
+      </a>
+    </div>
+
+    <script>
+      // Simple interactivity for demonstration
+      document.addEventListener('DOMContentLoaded', function () {
+        // Change active nav item on click
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach((item) => {
+          item.addEventListener('click', function (e) {
+            e.preventDefault();
+            navItems.forEach((i) => i.classList.remove('active'));
+            this.classList.add('active');
+          });
+        });
+
+        // Book items click
+        const bookItems = document.querySelectorAll('.book-item');
+        bookItems.forEach((item) => {
+          item.addEventListener('click', function () {
+            alert(
+              'Bible book selected: ' + this.querySelector('div').textContent
+            );
+          });
+        });
+
+        // Login simulation
+        const profileBtn = document.getElementById('profile-btn');
+        profileBtn.addEventListener('click', function () {
+          const loggedIn = confirm('Would you like to log in?');
+          if (loggedIn) {
+            alert('Login screen would appear here.');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

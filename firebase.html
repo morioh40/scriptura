@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Firebase Integration - Bible App</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      body {
+        background-color: #f5f7f9;
+        color: #333;
+        line-height: 1.6;
+        padding: 20px;
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: linear-gradient(135deg, #3a6b7e, #2c5868);
+        color: white;
+        border-radius: 10px;
+      }
+      h1 {
+        margin-bottom: 10px;
+      }
+      .container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        margin-bottom: 20px;
+      }
+      h2 {
+        color: #3a6b7e;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eee;
+      }
+      pre {
+        background: #2c5868;
+        color: white;
+        padding: 15px;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 15px 0;
+        font-size: 14px;
+      }
+      .function {
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #f0f5f7;
+        border-radius: 5px;
+        border-left: 4px solid #3a6b7e;
+      }
+      .function-name {
+        font-weight: bold;
+        color: #2c5868;
+        margin-bottom: 5px;
+      }
+      .function-desc {
+        font-size: 14px;
+        color: #555;
+      }
+      .note {
+        background: #fff5e6;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 20px 0;
+        border-left: 4px solid #ffa726;
+      }
+      @media (max-width: 768px) {
+        .container {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Firebase Integration for Bible App</h1>
+      <p>Comprehensive Firebase script for handling all app operations</p>
+    </header>
+
+    <div class="note">
+      <p>
+        <strong>Note:</strong> This script provides a complete Firebase
+        integration for your Bible app using Firebase Realtime Database. It
+        includes all the necessary functions for user authentication, data
+        management, and real-time updates.
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="column">
+        <div class="card">
+          <h2>Firebase Configuration</h2>
+          <pre>
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "your-app.firebaseapp.com",
+    databaseURL: "https://your-app-default-rtdb.firebaseio.com",
+    projectId: "your-app",
+    storageBucket: "your-app.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase services
+const auth = firebase.auth();
+const database = firebase.database();
+
+// Set persistence to local to keep user logged in
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+                </pre
+          >
+        </div>
+
+        <div class="card">
+          <h2>Authentication Functions</h2>
+
+          <div class="function">
+            <div class="function-name">
+              registerUser(email, password, userData)
+            </div>
+            <div class="function-desc">
+              Registers a new user with email and password
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">loginUser(email, password)</div>
+            <div class="function-desc">
+              Logs in a user with email and password
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">signInWithGoogle()</div>
+            <div class="function-desc">
+              Signs in or registers a user with Google
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">signInWithFacebook()</div>
+            <div class="function-desc">
+              Signs in or registers a user with Facebook
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">logoutUser()</div>
+            <div class="function-desc">Logs out the current user</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">resetPassword(email)</div>
+            <div class="function-desc">Sends a password reset email</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>User Profile Functions</h2>
+
+          <div class="function">
+            <div class="function-name">getUserProfile(userId)</div>
+            <div class="function-desc">Retrieves a user's profile data</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">updateUserProfile(userId, updates)</div>
+            <div class="function-desc">Updates a user's profile data</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">
+              updateUserPreferences(userId, preferences)
+            </div>
+            <div class="function-desc">Updates a user's preferences</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="column">
+        <div class="card">
+          <h2>Bible Data Functions</h2>
+
+          <div class="function">
+            <div class="function-name">getBibleBooks()</div>
+            <div class="function-desc">Retrieves all books of the Bible</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">getBookChapters(bookId)</div>
+            <div class="function-desc">
+              Retrieves all chapters of a specific book
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">getChapterVerses(bookId, chapter)</div>
+            <div class="function-desc">
+              Retrieves all verses of a specific chapter
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">searchBible(query, filters)</div>
+            <div class="function-desc">
+              Searches the Bible with optional filters
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">getDailyVerse()</div>
+            <div class="function-desc">Retrieves the daily verse</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>User Content Functions</h2>
+
+          <div class="function">
+            <div class="function-name">saveBookmark(userId, verseId, note)</div>
+            <div class="function-desc">Saves a verse bookmark for a user</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">getUserBookmarks(userId)</div>
+            <div class="function-desc">Retrieves all bookmarks for a user</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">addPrayerRequest(userId, request)</div>
+            <div class="function-desc">Adds a prayer request</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">getPrayerRequests(filters)</div>
+            <div class="function-desc">
+              Retrieves prayer requests with optional filters
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">addJournalEntry(userId, entry)</div>
+            <div class="function-desc">Adds a journal entry</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">getJournalEntries(userId, filters)</div>
+            <div class="function-desc">
+              Retrieves journal entries with optional filters
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>Community Functions</h2>
+
+          <div class="function">
+            <div class="function-name">joinGroup(userId, groupId)</div>
+            <div class="function-desc">Adds a user to a group</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">createPost(userId, groupId, post)</div>
+            <div class="function-desc">Creates a new post in a group</div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">getGroupPosts(groupId, filters)</div>
+            <div class="function-desc">
+              Retrieves posts from a group with optional filters
+            </div>
+          </div>
+
+          <div class="function">
+            <div class="function-name">addComment(userId, postId, comment)</div>
+            <div class="function-desc">Adds a comment to a post</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <p>
+        <strong>Implementation:</strong> To use this script, include it in your
+        project after the Firebase SDK and replace the configuration values with
+        your actual Firebase project details.
+      </p>
+    </div>
+
+    <script>
+      // Firebase Integration Script for Bible App
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: 'YOUR_API_KEY',
+        authDomain: 'your-app.firebaseapp.com',
+        databaseURL: 'https://your-app-default-rtdb.firebaseio.com',
+        projectId: 'your-app',
+        storageBucket: 'your-app.appspot.com',
+        messagingSenderId: 'YOUR_SENDER_ID',
+        appId: 'YOUR_APP_ID',
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      // Initialize Firebase services
+      const auth = firebase.auth();
+      const database = firebase.database();
+
+      // Set persistence to local to keep user logged in
+      auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
+      // ===== AUTHENTICATION FUNCTIONS =====
+
+      /**
+       * Registers a new user with email and password
+       * @param {string} email - User's email
+       * @param {string} password - User's password
+       * @param {object} userData - Additional user data
+       * @returns {Promise} - Registration result
+       */
+      function registerUser(email, password, userData) {
+        return auth
+          .createUserWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            const user = userCredential.user;
+            // Add additional user data to database
+            return database
+              .ref('users/' + user.uid)
+              .set({
+                email: email,
+                name: userData.name || '',
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                lastLogin: firebase.database.ServerValue.TIMESTAMP,
+                preferences: {
+                  bibleVersion: 'NIV',
+                  dailyReminder: true,
+                  notifications: true,
+                },
+                ...userData,
+              })
+              .then(() => userCredential);
+          });
+      }
+
+      /**
+       * Logs in a user with email and password
+       * @param {string} email - User's email
+       * @param {string} password - User's password
+       * @returns {Promise} - Login result
+       */
+      function loginUser(email, password) {
+        return auth
+          .signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Update last login timestamp
+            const user = userCredential.user;
+            return database
+              .ref('users/' + user.uid + '/lastLogin')
+              .set(firebase.database.ServerValue.TIMESTAMP)
+              .then(() => userCredential);
+          });
+      }
+
+      /**
+       * Signs in or registers a user with Google
+       * @returns {Promise} - Authentication result
+       */
+      function signInWithGoogle() {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        provider.addScope('profile');
+        provider.addScope('email');
+
+        return auth.signInWithPopup(provider).then((result) => {
+          // Check if user is new
+          const isNewUser = result.additionalUserInfo.isNewUser;
+          if (isNewUser) {
+            // Add user to database
+            const user = result.user;
+            return database
+              .ref('users/' + user.uid)
+              .set({
+                email: user.email,
+                name: user.displayName,
+                photoURL: user.photoURL,
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                lastLogin: firebase.database.ServerValue.TIMESTAMP,
+                preferences: {
+                  bibleVersion: 'NIV',
+                  dailyReminder: true,
+                  notifications: true,
+                },
+              })
+              .then(() => result);
+          }
+          return result;
+        });
+      }
+
+      /**
+       * Signs in or registers a user with Facebook
+       * @returns {Promise} - Authentication result
+       */
+      function signInWithFacebook() {
+        const provider = new firebase.auth.FacebookAuthProvider();
+        provider.addScope('email');
+
+        return auth.signInWithPopup(provider).then((result) => {
+          // Check if user is new
+          const isNewUser = result.additionalUserInfo.isNewUser;
+          if (isNewUser) {
+            // Add user to database
+            const user = result.user;
+            return database
+              .ref('users/' + user.uid)
+              .set({
+                email: user.email,
+                name: user.displayName,
+                photoURL: user.photoURL,
+                createdAt: firebase.database.ServerValue.TIMESTAMP,
+                lastLogin: firebase.database.ServerValue.TIMESTAMP,
+                preferences: {
+                  bibleVersion: 'NIV',
+                  dailyReminder: true,
+                  notifications: true,
+                },
+              })
+              .then(() => result);
+          }
+          return result;
+        });
+      }
+
+      /**
+       * Logs out the current user
+       * @returns {Promise} - Logout result
+       */
+      function logoutUser() {
+        return auth.signOut();
+      }
+
+      /**
+       * Sends a password reset email
+       * @param {string} email - User's email
+       * @returns {Promise} - Reset result
+       */
+      function resetPassword(email) {
+        return auth.sendPasswordResetEmail(email);
+      }
+
+      // ===== USER PROFILE FUNCTIONS =====
+
+      /**
+       * Retrieves a user's profile data
+       * @param {string} userId - User ID
+       * @returns {Promise} - User profile data
+       */
+      function getUserProfile(userId) {
+        return database
+          .ref('users/' + userId)
+          .once('value')
+          .then((snapshot) => snapshot.val());
+      }
+
+      /**
+       * Updates a user's profile data
+       * @param {string} userId - User ID
+       * @param {object} updates - Profile updates
+       * @returns {Promise} - Update result
+       */
+      function updateUserProfile(userId, updates) {
+        return database.ref('users/' + userId).update(updates);
+      }
+
+      /**
+       * Updates a user's preferences
+       * @param {string} userId - User ID
+       * @param {object} preferences - Preference updates
+       * @returns {Promise} - Update result
+       */
+      function updateUserPreferences(userId, preferences) {
+        return database
+          .ref('users/' + userId + '/preferences')
+          .update(preferences);
+      }
+
+      // ===== BIBLE DATA FUNCTIONS =====
+
+      /**
+       * Retrieves all books of the Bible
+       * @returns {Promise} - Bible books data
+       */
+      function getBibleBooks() {
+        return database
+          .ref('bible/books')
+          .once('value')
+          .then((snapshot) => snapshot.val());
+      }
+
+      /**
+       * Retrieves all chapters of a specific book
+       * @param {string} bookId - Book ID
+       * @returns {Promise} - Book chapters data
+       */
+      function getBookChapters(bookId) {
+        return database
+          .ref('bible/books/' + bookId + '/chapters')
+          .once('value')
+          .then((snapshot) => snapshot.val());
+      }
+
+      /**
+       * Retrieves all verses of a specific chapter
+       * @param {string} bookId - Book ID
+       * @param {number} chapter - Chapter number
+       * @returns {Promise} - Chapter verses data
+       */
+      function getChapterVerses(bookId, chapter) {
+        return database
+          .ref('bible/verses/' + bookId + '/' + chapter)
+          .once('value')
+          .then((snapshot) => snapshot.val());
+      }
+
+      /**
+       * Searches the Bible with optional filters
+       * @param {string} query - Search query
+       * @param {object} filters - Search filters
+       * @returns {Promise} - Search results
+       */
+      function searchBible(query, filters = {}) {
+        // This would typically be implemented with a more sophisticated search solution
+        // For demo purposes, we'll just return a filtered subset
+        return database
+          .ref('bible/verses')
+          .once('value')
+          .then((snapshot) => {
+            const verses = snapshot.val();
+            const results = [];
+
+            // Simple search implementation (would be more robust in a real app)
+            for (const bookId in verses) {
+              for (const chapter in verses[bookId]) {
+                for (const verseNum in verses[bookId][chapter]) {
+                  const verse = verses[bookId][chapter][verseNum];
+                  if (verse.text.toLowerCase().includes(query.toLowerCase())) {
+                    results.push({
+                      bookId,
+                      chapter: parseInt(chapter),
+                      verse: parseInt(verseNum),
+                      text: verse.text,
+                    });
+                  }
+                }
+              }
+            }
+
+            return results;
+          });
+      }
+
+      /**
+       * Retrieves the daily verse
+       * @returns {Promise} - Daily verse data
+       */
+      function getDailyVerse() {
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        return database
+          .ref('dailyVerses/' + today)
+          .once('value')
+          .then((snapshot) => {
+            if (snapshot.exists()) {
+              return snapshot.val();
+            } else {
+              // Fallback to a random verse if none for today
+              return database
+                .ref('bible/verses/gen/1/1')
+                .once('value')
+                .then((verseSnapshot) => {
+                  const verse = verseSnapshot.val();
+                  return {
+                    book: 'Genesis',
+                    chapter: 1,
+                    verse: 1,
+                    text: verse.text,
+                    date: today,
+                  };
+                });
+            }
+          });
+      }
+
+      // ===== USER CONTENT FUNCTIONS =====
+
+      /**
+       * Saves a verse bookmark for a user
+       * @param {string} userId - User ID
+       * @param {string} verseId - Verse ID (format: book_chapter_verse)
+       * @param {string} note - Optional note
+       * @returns {Promise} - Save result
+       */
+      function saveBookmark(userId, verseId, note = '') {
+        const bookmarkId = database.ref().child('bookmarks').push().key;
+        const bookmark = {
+          verseId,
+          note,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+        };
+
+        const updates = {};
+        updates['userBookmarks/' + userId + '/' + bookmarkId] = bookmark;
+        updates['verseBookmarks/' + verseId + '/' + userId + '/' + bookmarkId] =
+          bookmark;
+
+        return database.ref().update(updates);
+      }
+
+      /**
+       * Retrieves all bookmarks for a user
+       * @param {string} userId - User ID
+       * @returns {Promise} - User's bookmarks
+       */
+      function getUserBookmarks(userId) {
+        return database
+          .ref('userBookmarks/' + userId)
+          .once('value')
+          .then((snapshot) => snapshot.val());
+      }
+
+      /**
+       * Adds a prayer request
+       * @param {string} userId - User ID
+       * @param {object} request - Prayer request data
+       * @returns {Promise} - Add result
+       */
+      function addPrayerRequest(userId, request) {
+        const requestId = database.ref().child('prayerRequests').push().key;
+        const prayerRequest = {
+          ...request,
+          userId,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+          updatedAt: firebase.database.ServerValue.TIMESTAMP,
+          isAnswered: false,
+        };
+
+        const updates = {};
+        updates['prayerRequests/' + requestId] = prayerRequest;
+        updates['userPrayerRequests/' + userId + '/' + requestId] =
+          prayerRequest;
+
+        return database.ref().update(updates);
+      }
+
+      /**
+       * Retrieves prayer requests with optional filters
+       * @param {object} filters - Request filters
+       * @returns {Promise} - Prayer requests
+       */
+      function getPrayerRequests(filters = {}) {
+        let ref = database.ref('prayerRequests');
+
+        // Apply filters if provided
+        if (filters.userId) {
+          ref = database.ref('userPrayerRequests/' + filters.userId);
+        }
+
+        return ref
+          .orderByChild('createdAt')
+          .limitToLast(50)
+          .once('value')
+          .then((snapshot) => snapshot.val());
+      }
+
+      /**
+       * Adds a journal entry
+       * @param {string} userId - User ID
+       * @param {object} entry - Journal entry data
+       * @returns {Promise} - Add result
+       */
+      function addJournalEntry(userId, entry) {
+        const entryId = database.ref().child('journalEntries').push().key;
+        const journalEntry = {
+          ...entry,
+          userId,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+          updatedAt: firebase.database.ServerValue.TIMESTAMP,
+        };
+
+        return database
+          .ref('userJournalEntries/' + userId + '/' + entryId)
+          .set(journalEntry);
+      }
+
+      /**
+       * Retrieves journal entries with optional filters
+       * @param {string} userId - User ID
+       * @param {object} filters - Entry filters
+       * @returns {Promise} - Journal entries
+       */
+      function getJournalEntries(userId, filters = {}) {
+        let ref = database.ref('userJournalEntries/' + userId);
+
+        // Apply date filter if provided
+        if (filters.startDate && filters.endDate) {
+          // This would need a more complex query structure in a real app
+          return ref
+            .orderByChild('createdAt')
+            .once('value')
+            .then((snapshot) => {
+              const entries = snapshot.val();
+              const filteredEntries = {};
+
+              for (const entryId in entries) {
+                const entry = entries[entryId];
+                if (
+                  entry.createdAt >= filters.startDate &&
+                  entry.createdAt <= filters.endDate
+                ) {
+                  filteredEntries[entryId] = entry;
+                }
+              }
+
+              return filteredEntries;
+            });
+        }
+
+        return ref
+          .orderByChild('createdAt')
+          .limitToLast(50)
+          .once('value')
+          .then((snapshot) => snapshot.val());
+      }
+
+      // ===== COMMUNITY FUNCTIONS =====
+
+      /**
+       * Adds a user to a group
+       * @param {string} userId - User ID
+       * @param {string} groupId - Group ID
+       * @returns {Promise} - Join result
+       */
+      function joinGroup(userId, groupId) {
+        const updates = {};
+        updates['userGroups/' + userId + '/' + groupId] = true;
+        updates['groupMembers/' + groupId + '/' + userId] = true;
+
+        return database.ref().update(updates);
+      }
+
+      /**
+       * Creates a new post in a group
+       * @param {string} userId - User ID
+       * @param {string} groupId - Group ID
+       * @param {object} post - Post data
+       * @returns {Promise} - Create result
+       */
+      function createPost(userId, groupId, post) {
+        const postId = database.ref().child('posts').push().key;
+        const newPost = {
+          ...post,
+          userId,
+          groupId,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+          updatedAt: firebase.database.ServerValue.TIMESTAMP,
+          likes: 0,
+          comments: 0,
+        };
+
+        const updates = {};
+        updates['groupPosts/' + groupId + '/' + postId] = newPost;
+        updates['userPosts/' + userId + '/' + postId] = newPost;
+        updates['posts/' + postId] = newPost;
+
+        return database.ref().update(updates);
+      }
+
+      /**
+       * Retrieves posts from a group with optional filters
+       * @param {string} groupId - Group ID
+       * @param {object} filters - Post filters
+       * @returns {Promise} - Group posts
+       */
+      function getGroupPosts(groupId, filters = {}) {
+        let ref = database.ref('groupPosts/' + groupId);
+
+        return ref
+          .orderByChild('createdAt')
+          .limitToLast(50)
+          .once('value')
+          .then((snapshot) => snapshot.val());
+      }
+
+      /**
+       * Adds a comment to a post
+       * @param {string} userId - User ID
+       * @param {string} postId - Post ID
+       * @param {object} comment - Comment data
+       * @returns {Promise} - Add result
+       */
+      function addComment(userId, postId, comment) {
+        const commentId = database.ref().child('comments').push().key;
+        const newComment = {
+          ...comment,
+          userId,
+          postId,
+          createdAt: firebase.database.ServerValue.TIMESTAMP,
+        };
+
+        const updates = {};
+        updates['postComments/' + postId + '/' + commentId] = newComment;
+        updates['userComments/' + userId + '/' + commentId] = newComment;
+        updates['comments/' + commentId] = newComment;
+
+        // Update comment count on post
+        updates['posts/' + postId + '/comments'] =
+          firebase.database.ServerValue.increment(1);
+        updates['groupPosts/' + groupId + '/' + postId + '/comments'] =
+          firebase.database.ServerValue.increment(1);
+        updates['userPosts/' + userId + '/' + postId + '/comments'] =
+          firebase.database.ServerValue.increment(1);
+
+        return database.ref().update(updates);
+      }
+
+      // ===== REAL-TIME LISTENERS =====
+
+      /**
+       * Sets up a real-time listener for user data changes
+       * @param {string} userId - User ID
+       * @param {function} callback - Callback function
+       * @returns {function} - Unsubscribe function
+       */
+      function listenToUserData(userId, callback) {
+        return database.ref('users/' + userId).on('value', (snapshot) => {
+          callback(snapshot.val());
+        });
+      }
+
+      /**
+       * Sets up a real-time listener for prayer requests
+       * @param {function} callback - Callback function
+       * @returns {function} - Unsubscribe function
+       */
+      function listenToPrayerRequests(callback) {
+        return database
+          .ref('prayerRequests')
+          .orderByChild('createdAt')
+          .limitToLast(20)
+          .on('value', (snapshot) => {
+            callback(snapshot.val());
+          });
+      }
+
+      /**
+       * Sets up a real-time listener for group posts
+       * @param {string} groupId - Group ID
+       * @param {function} callback - Callback function
+       * @returns {function} - Unsubscribe function
+       */
+      function listenToGroupPosts(groupId, callback) {
+        return database
+          .ref('groupPosts/' + groupId)
+          .orderByChild('createdAt')
+          .limitToLast(20)
+          .on('value', (snapshot) => {
+            callback(snapshot.val());
+          });
+      }
+
+      // Export functions for use in other files
+      window.firebaseService = {
+        // Authentication
+        registerUser,
+        loginUser,
+        signInWithGoogle,
+        signInWithFacebook,
+        logoutUser,
+        resetPassword,
+
+        // User Profile
+        getUserProfile,
+        updateUserProfile,
+        updateUserPreferences,
+
+        // Bible Data
+        getBibleBooks,
+        getBookChapters,
+        getChapterVerses,
+        searchBible,
+        getDailyVerse,
+
+        // User Content
+        saveBookmark,
+        getUserBookmarks,
+        addPrayerRequest,
+        getPrayerRequests,
+        addJournalEntry,
+        getJournalEntries,
+
+        // Community
+        joinGroup,
+        createPost,
+        getGroupPosts,
+        addComment,
+
+        // Real-time Listeners
+        listenToUserData,
+        listenToPrayerRequests,
+        listenToGroupPosts,
+      };
+    </script>
+  </body>
+</html>
